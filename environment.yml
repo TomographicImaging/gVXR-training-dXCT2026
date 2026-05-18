@@ -1,0 +1,39 @@
+name: gvxr-dXCT2026
+channels:
+    - conda-forge
+    - https://software.repos.intel.com/python/conda
+    - ccpi
+#    - pytorch
+#    - nvidia
+dependencies:
+#    - ipyevents
+#    - ipympl
+#    - ipywidgets
+#    - jupyterlab
+#    - matplotlib
+#    - mpl-interactions
+    - numpy
+    - pandas
+    - python=3.11
+#    - SimpleITK
+    - cil
+#    - ccpi-regulariser
+    - astra-toolbox=*=cuda*
+    - tigre
+    - progressbar
+    - k3d
+#    - python-dotenv
+#    - pytorch-cuda
+#    - torchvision
+#    - keras
+#    - protobuf
+#    - tensorflow-gpu
+#    - fsspec
+#    - opencv
+    - pip
+    - pip:
+#        - opengate
+#        - viewscad
+#        - gvxr>=2.1.0
+#        - git+git://git.code.sf.net/p/gvirtualxray/gitroot
+#        - segmentation-models
