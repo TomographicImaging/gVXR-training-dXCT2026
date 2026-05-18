@@ -73,12 +73,12 @@ We also shows how to plot the corresponding energy response. <a href="https://co
 ### General inquiry
 
 - Email us (Franck P. Vidal, STFC | Matthew Peter Jones, UCL);
-- Join the discord: [https://discord.gg/qebNF8mz](https://discord.gg/qebNF8mz)
-- Raise an issue on GitHub: [https://github.com/TomographicImaging/gVXR-training-dXCT2026/issues](https://github.com/TomographicImaging/gVXR-Tutorials/issues)
+- Join the discord: [https://discord.gg/qebNF8mz](https://discord.gg/qebNF8mz);
+- Raise an issue on GitHub: [https://github.com/TomographicImaging/gVXR-training-dXCT2026/issues](https://github.com/TomographicImaging/gVXR-Tutorials/issues).
 
 ### gVXR-specific inquiry
 
 Same as above plus the following:
 - Open a ticket on SourceForge: [https://sourceforge.net/p/gvirtualxray/tickets](https://sourceforge.net/p/gvirtualxray/tickets);
-- Subscribe to the mailing list: [https://sourceforge.net/projects/gvirtualxray/lists/gvirtualxray-discuss](https://sourceforge.net/projects/gvirtualxray/lists/gvirtualxray-discuss)
+- Subscribe to the mailing list: [https://sourceforge.net/projects/gvirtualxray/lists/gvirtualxray-discuss](https://sourceforge.net/projects/gvirtualxray/lists/gvirtualxray-discuss);
 - Check the technical documentation, e.g. calling `help(gvxr)` for help on the Python package or something like `help(gvxr.createNewContext)` for a specific function.
