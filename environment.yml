@@ -10,7 +10,7 @@ dependencies:
 #    - ipympl
 #    - ipywidgets
 #    - jupyterlab
-#    - matplotlib
+    - matplotlib
 #    - mpl-interactions
     - numpy
     - pandas
@@ -34,6 +34,6 @@ dependencies:
     - pip:
 #        - opengate
 #        - viewscad
-#        - gvxr>=2.1.0
+        - gvxr>=2.1.0
 #        - git+git://git.code.sf.net/p/gvirtualxray/gitroot
 #        - segmentation-models
