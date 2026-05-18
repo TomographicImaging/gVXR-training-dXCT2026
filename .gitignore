@@ -1,6 +1,7 @@
 
 .idea/
 notebooks/morning/output_data
+notebooks/morning/solutions/output_data
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
