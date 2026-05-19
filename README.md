@@ -84,6 +84,9 @@ conda activate gvxr-dXCT2026
   In this notebook we explore how to create a detector with a scintillator.
   We also shows how to plot the corresponding energy response. 
   [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/TomographicImaging/gVXR-training-dXCT2026/blob/main/notebooks/morning/scintillation.ipynb)
+  - [Segmentation to simulation](notebooks/morning/segmentation-to-CT_scan-simulation.ipynb): 
+  Create a CT reconstruction from data simulated using a segmented image to model the sample.
+  [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/TomographicImaging/gVXR-training-dXCT2026/blob/main/notebooks/morning/segmentation-to-CT_scan-simulation.ipynb)
 
 ## How to find help
 
@@ -99,3 +102,30 @@ Same as above plus the following:
 - Open a ticket on SourceForge: [https://sourceforge.net/p/gvirtualxray/tickets](https://sourceforge.net/p/gvirtualxray/tickets);
 - Subscribe to the mailing list: [https://sourceforge.net/projects/gvirtualxray/lists/gvirtualxray-discuss](https://sourceforge.net/projects/gvirtualxray/lists/gvirtualxray-discuss);
 - Check the technical documentation, e.g. calling `help(gvxr)` for help on the Python package or something like `help(gvxr.createNewContext)` for a specific function.
+
+## How to cite
+
+If you use gVXR in your own applications, particularly for research & development, I will be grateful if you could cite the articles as follows:
+
+**Community review paper:** F.P. Vidal, S. Afshari, S. Ahmed, A. Albiol, F. Albiol, É. Béchet, A. Corbí Bellot, S. Bosse, 
+S. Burkhard, Y. Chahid, C.-Y. Chou, R. Culver, P. Desbarats, L. Dixon, J. Friemann, A. Garbout, M. García-Lorenzo,
+J.-F. Giovannelli, R. Hanna, C. Hatton, A. Henry, G. Kelly, C. Leblanc, A. Leonardi, J. M. Létang, H. Lipscomb,
+T. Manchester, B. Meere, C. Michelet, S. Middleburgh, R.P. Mihail, I.T. Mitchell, L. Perera, M. Puig, M. Racy,
+A. Rouwane, H. Seznec, A. Sújar, J. Tugwell-Allsup, and P.-F. Villard: 
+X-ray simulations with gVXR in education, digital twining, experiment planning, and data analysis
+*Nuclear Instruments and Methods in Physics Research Section B: Beam Interactions with Materials and Atoms*, 568 (2025), pp. 165804,
+[doi: 10.1016/j.nimb.2025.165804](https://doi.org/10.1016/j.nimb.2025.165804)
+
+**Clinical validation study:** J.L. Pointon, T. Wen, J. Tugwell-Allsup, A. Sújar, J.M. Létang, and F.P. Vidal: 
+Simulation of X-ray projections on GPU: Benchmarking gVirtualXray with clinically realistic phantoms. 
+*Computer Methods and Programs in Biomedicine*, 234 (2023), pp. 107500, 
+[doi: 10.1016/j.cmpb.2023.107500](https://doi.org/10.1016/j.cmpb.2023.107500)
+
+**First reference to gVXR as an opensource software:** F.P. Vidal and P.-F. Villard: 
+Development and validation of real-time simulation of X-ray imaging with respiratory motion. 
+*Computerized Medical Imaging Graphics*, 49 (2016), pp. 1-15, 
+[doi: 10.1016/j.compmedimag.2015.12.002](https://doi.org/10.1016/j.compmedimag.2015.12.002)
+
+**Seminal paper:** F.P. Vidal, M. Garnier, N. Freud, J.M. Létang, and N.W. John: Simulation of X-ray attenuation on the GPU. 
+*Proceedings of Theory and Practice of Computer Graphics 2009*, Eurographics Association, Cardiff, UK (2009), pp. 25-32, 
+[doi: 10.2312/LocalChapterEvents/TPCG/TPCG09/025-032](https://doi.org/10.2312/LocalChapterEvents/TPCG/TPCG09/025-032)
