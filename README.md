@@ -58,15 +58,32 @@ conda activate gvxr-dXCT2026
 
 ### Morning session
 
-- [Test installation](notebooks/morning/test_installation.ipynb): Run the quick test script provided with 
-  gVirtualXray's Python package to make sure the installation is working well on your system. <a href="https://colab.research.google.com/github/TomographicImaging/gVXR-training-dXCT2026/blob/main/notebooks/morning/test_installation.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
-- [First X-ray simulation](notebooks/morning/first_xray_simulation.ipynb): Explore the step-by-step notebook to create our first X-ray radiograph. A mono-material object is imaged with a monochromatic source and an ideal detector. We show how to visualise the X-ray radiograph and take a screenshot of the 3D visualisation of the simulation environment. <a href="https://colab.research.google.com/github/TomographicImaging/gVXR-training-dXCT2026/blob/main/notebooks/morning/first_xray_simulation.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
-- [Numpy integration](notebooks/morning/numpy_integration.ipynb): Experiment with the Numpy integration to speed up the simulation. <a href="https://colab.research.google.com/github/TomographicImaging/gVXR-training-dXCT2026/blob/main/notebooks/morning/numpy_integration.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
-- [3D visualisation](notebooks/morning/visualisation.ipynb): Get familiar with the three different 3D visualisation method provided with gVXR, i) K3D to interactively visualise the 3D scene in a Jupyter widget, ii) a customisable static 3D visualisation, and iii) an interactive 3D visualisation window. <a href="https://colab.research.google.com/github/TomographicImaging/gVXR-training-dXCT2026/blob/main/notebooks/morning/visualisation.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
-- [Multi-material anatomical example](notebooks/multi_material-lungman_phantom.ipynb): Using the knowledge learnt in [First X-ray simulation](notebooks/first_xray_simulation.ipynb), initialise your own simulation to create a radiograph of the Lungman phantom. <a href="https://colab.research.google.com/github/TomographicImaging/gVXR-training-dXCT2026/blob/main/notebooks/morning/multi_material-lungman_phantom.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
-- [Polychromtic X-ray tube spectra](notebooks/polychromatism.ipynb): In this notebook we explore how to specify polychromtic X-ray tube spectra, without and with filtration. We also shows how to plot the spectrum. <a href="https://colab.research.google.com/github/TomographicImaging/gVXR-training-dXCT2026/blob/main/notebooks/morning/polychromatism.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
-- [Scintillation](notebooks/scintillation.ipynb): In this notebook we explore how to create a detector with a scintillator.
-We also shows how to plot the corresponding energy response. <a href="https://colab.research.google.com/github/TomographicImaging/gVXR-training-dXCT2026/blob/main/notebooks/morning/scintillation.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
+- [Test installation](notebooks/morning/test_installation.ipynb): 
+  Run the quick test script provided with gVirtualXray's Python package to make sure the installation is working well on your system.
+  [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/TomographicImaging/gVXR-training-dXCT2026/blob/main/notebooks/morning/test_installation.ipynb)
+- [First X-ray simulation](notebooks/morning/first_xray_simulation.ipynb): 
+  Explore the step-by-step notebook to create our first X-ray radiograph. 
+  A mono-material object is imaged with a monochromatic source and an ideal detector. 
+  We show how to visualise the X-ray radiograph and take a screenshot of the 3D visualisation of the simulation environment.
+  [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/TomographicImaging/gVXR-training-dXCT2026/blob/main/notebooks/morning/first_xray_simulation.ipynb)
+- [Numpy integration](notebooks/morning/numpy_integration.ipynb): Experiment with the Numpy integration to speed up 
+  the simulation. 
+  [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/TomographicImaging/gVXR-training-dXCT2026/blob/main/notebooks/morning/numpy_integration.ipynb)
+- [3D visualisation](notebooks/morning/visualisation.ipynb): 
+  Get familiar with the three different 3D visualisation methods provided with gVXR, 
+  1. K3D to interactively visualise the 3D scene in a Jupyter widget, 
+  2. a customisable static 3D visualisation, and 
+  3. an interactive 3D visualisation window. <br/>
+  In this notebook you will also create a multi-material sample. 
+  [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/TomographicImaging/gVXR-training-dXCT2026/blob/main/notebooks/morning/visualisation.ipynb)
+- [Polychromtic X-ray tube spectra](notebooks/morning/polychromatism.ipynb):
+  In this notebook we explore how to specify polychromtic X-ray tube spectra, without and with filtration. 
+  We also shows how to plot the spectrum. 
+  [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/TomographicImaging/gVXR-training-dXCT2026/blob/main/notebooks/morning/polychromatism.ipynb)
+- [Scintillation](notebooks/morning/scintillation.ipynb): 
+  In this notebook we explore how to create a detector with a scintillator.
+  We also shows how to plot the corresponding energy response. 
+  [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/TomographicImaging/gVXR-training-dXCT2026/blob/main/notebooks/morning/scintillation.ipynb)
 
 ## How to find help
 
