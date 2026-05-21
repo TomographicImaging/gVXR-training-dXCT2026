@@ -84,9 +84,9 @@ conda activate gvxr-dXCT2026
   In this notebook we explore how to create a detector with a scintillator.
   We also shows how to plot the corresponding energy response. 
   [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/TomographicImaging/gVXR-training-dXCT2026/blob/main/notebooks/morning/scintillation.ipynb)
-  - [Segmentation to simulation](notebooks/morning/segmentation-to-CT_scan-simulation.ipynb): 
-  Create a CT reconstruction from data simulated using a segmented image to model the sample.
-  [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/TomographicImaging/gVXR-training-dXCT2026/blob/main/notebooks/morning/segmentation-to-CT_scan-simulation.ipynb)
+- [Segmentation to simulation](notebooks/morning/segmentation-to-CT_scan-simulation.ipynb): 
+Create a CT reconstruction from data simulated using a segmented image to model the sample.
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/TomographicImaging/gVXR-training-dXCT2026/blob/main/notebooks/morning/segmentation-to-CT_scan-simulation.ipynb)
 
 ## How to find help
 
