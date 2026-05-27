@@ -25,6 +25,8 @@ import datetime, math # To estimate durations
 from tifffile import  imread, imwrite # Read/Write the image of labels
 
 from skimage.transform import resize # Resize the image of labels
+from skimage.util import img_as_ubyte
+
 from utils import pad_image, crop_image # Process the image of labels
 from utils import create_sample # Generate the sample if needed
 
@@ -111,7 +113,8 @@ for voltage_kV in kV_set:
             for sample_id in range(1, 7):
 
                 # Generate the sample if needed
-                create_sample(sample_id)
+                labels_cropped, original_pixel_size, unit = create_sample(sample_id,
+                                                                          os.path.join(output_path, "meshes"))
 
                 # Go through all the SODs
                 for SOD_mm in SOD_mm_set:
@@ -142,84 +145,138 @@ for voltage_kV in kV_set:
                         print(f"Total duration left: {hours_left} hours, {minutes_left} minutes")
                     print("********************************************************************************")
 
-                    # Apply the SOD
-                    gvxr.applySOD("sample", SOD_mm, "cm")
-
-                    # Select the number of projections, make it at least 1000.
-                    number_of_projections = max(1000, gvxr.getOptimalNumberOfProjectionsCT())
-
-                    # Perform the actual simulations
-                    rotation_centre_in_mm = gvxr.getNodeAndChildrenBoundingBoxCentre("sample", "mm")
-                    rotation_axis = gvxr.getDetectorUpVector()
-
-                    gvxr.computeCTAcquisition(
-                        os.path.join(output_path, "projections"),  # The path where the X-ray projections will be saved
-                        "",  # The path where the screenshots will be saved
-                        number_of_projections,  # The total number of projections to simulate
-                        0,  # The rotation angle corresponding to the first projection
-                        False,  # A boolean flag to include or exclude the last angle
-                        360,  # The rotation angle corresponding to the last projection
-                        50,  # The number of white images used to perform the flat-field correction
-                        *rotation_centre_in_mm,  # The location of the rotation centre
-                        unit,  # The corresponding unit of length
-                        *rotation_axis  # The rotation axis
-                    )
-
-                    # Read the simulated data with CIL
-                    reader = gVXRDataReader(gvxr.getProjectionOutputPathCT(),
-                                            gvxr.getAngleSetCT(),
-                                            rotation_axis,
-                                            rotation_centre_in_mm)
-                    data = reader.read()
-
-                    # Apply the minus log transformation
-                    # (use use white_level=1.0 as the flat-field correction is already applied)
-                    data_corr = TransmissionAbsorptionConverter(white_level=1.0)(data)
-
-                    # We will only reconstruct one slice
-                    image_geometry = data_corr.geometry.get_ImageGeometry()
-                    image_geometry.voxel_num_z = 1
-
-                    # Perform the reconstruction with CIL using the Astra backend
-                    data_corr.reorder(order='astra')
-                    fbp = FBP(image_geometry, data_corr.geometry)
-                    fbp.set_input(data_corr)
-                    reconstruction = fbp.get_output()
-
                     # Generate the output file names
                     CT_fname = os.path.join(output_path,
-                        "CT_" + str(sample_id) + "_" + str(SOD_mm) + "_" + str(exposure_s) + str(current_uA))
+                        "CT-" + str(sample_id) + "-" + str(voltage_kV) + "-" + str(SOD_mm) + "-" + str(exposure_s) + str(current_uA))
 
                     label_fname = os.path.join(output_path,
-                        "labels_" + str(sample_id) + "_" + str(SOD_mm) + "_" + str(exposure_s) + str(current_uA))
+                        "labels-" + str(sample_id) + "-" + str(voltage_kV) + "-" + str(SOD_mm) + "-" + str(exposure_s) + str(current_uA))
 
-                    # Save the reconstructed CT images
-                    writer = TIFFWriter(data=reconstruction,
-                                        file_name=CT_fname,
-                                        compression="uint16")
+                    scale_offset_fname = os.path.join(output_path,
+                        "scaleoffset-" + str(sample_id) + "-" + str(voltage_kV) + "-" + str(SOD_mm) + "-" + str(exposure_s) + str(current_uA))
 
-                    # Generate the labels
-                    # 1. Resize the cropped image of labels without interpolation so that it is using the same pixel size as the CT
-                    # reconstruction
-                    voxel_size = [image_geometry.voxel_size_x, image_geometry.voxel_size_y]
-                    scaling_factors = [voxel_size[0] / original_pixel_size[0], voxel_size[1] / original_pixel_size[1]]
+                    CT_fname = CT_fname.replace(".", "_")
+                    label_fname = label_fname.replace(".", "_")
+                    scale_offset_fname = scale_offset_fname.replace(".", "_")
 
-                    labelled_resized = resize(
-                        labels_cropped,
-                        (round(labels_cropped.shape[0] // scaling_factors[0]), round(labels_cropped.shape[1] //
-                                                                                     scaling_factors[1])),
-                        anti_aliasing=False
-                    )
+                    if CT_fname[0] == '_':
+                        CT_fname = '.' + CT_fname[1:]
 
-                    # 2. Pad it with 0s so that it is the same number of pixels as the CT reconstruction
-                    labels_padded = pad_image(labelled_resized, reconstruction.array.shape)
+                    if label_fname[0] == '_':
+                        label_fname = '.' + label_fname[1:]
 
-                    # 3. Save the image
-                    imwrite(label_fname + ".tif", labels_padded)
+                    if scale_offset_fname[0] == '_':
+                        scale_offset_fname = '.' + scale_offset_fname[1:]
 
-                    # Compute the processing time of this iteration
-                    stop_time = datetime.datetime.now()
-                    duration = (stop_time - start_time).total_seconds()
-                    total_duration += duration
-                    print()
+                    # The data does not exist as yet
+                    if not os.path.isfile(CT_fname + "_idx_0000.tiff") or \
+                        not os.path.isfile(label_fname + ".tiff") or \
+                        not os.path.isfile(scale_offset_fname + ".json"):
 
+                        # Apply the SOD
+                        gvxr.setLocalTransformationMatrix("sample", gvxr.getIdentityMatrix4())
+                        gvxr.applySOD("sample", SOD_mm, "mm")
+
+                        # Select the number of projections, make it at least 1000.
+                        number_of_projections = max(1000, gvxr.getOptimalNumberOfProjectionsCT())
+
+                        # Perform the actual simulations
+                        rotation_centre_in_mm = gvxr.getNodeAndChildrenBoundingBoxCentre("sample", "mm")
+                        rotation_axis = gvxr.getDetectorUpVector()
+
+                        print(f"Simulate {number_of_projections} radiographs")
+                        gvxr.computeCTAcquisition(
+                            os.path.join(output_path, "projections"),  # The path where the X-ray projections will be saved
+                            "",  # The path where the screenshots will be saved
+                            number_of_projections,  # The total number of projections to simulate
+                            0,  # The rotation angle corresponding to the first projection
+                            False,  # A boolean flag to include or exclude the last angle
+                            360,  # The rotation angle corresponding to the last projection
+                            50,  # The number of white images used to perform the flat-field correction
+                            *rotation_centre_in_mm,  # The location of the rotation centre
+                            unit,  # The corresponding unit of length
+                            *rotation_axis  # The rotation axis
+                        )
+
+                        print("Reconstructing CT")
+
+                        # Read the simulated data with CIL
+                        reader = gVXRDataReader(gvxr.getProjectionOutputPathCT(),
+                                                gvxr.getAngleSetCT(),
+                                                rotation_axis,
+                                                rotation_centre_in_mm)
+                        data = reader.read()
+                        print(f"Data min value: {data.min()}, max value: {data.max()}")
+
+                        # Apply the minus log transformation
+                        # (use use white_level=1.0 as the flat-field correction is already applied)
+                        data_corr = TransmissionAbsorptionConverter(white_level=1.0)(data)
+
+                        # We will only reconstruct one slice
+                        image_geometry = data_corr.geometry.get_ImageGeometry()
+                        image_geometry.voxel_num_z = 1
+
+                        # Perform the reconstruction with CIL using the Astra backend
+                        data_corr.reorder(order='astra')
+                        fbp = FBP(image_geometry, data_corr.geometry)
+                        fbp.set_input(data_corr)
+                        reconstruction = fbp.get_output()
+
+                        # Print where data will be saved
+                        print(f"Save the CT slice in {CT_fname}.tiff")
+                        print(f"Save the labels in {label_fname}.tiff")
+
+                        # Save the reconstructed CT images
+                        writer = TIFFWriter(data=reconstruction,
+                                            file_name=CT_fname,
+                                            compression="uint16")
+                        writer.write()
+
+                        # Rename the offset file
+                        os.rename(os.path.join(output_path, "scaleoffset.json"),
+                                               scale_offset_fname + ".json")
+
+                        # Generate the labels
+                        # 1. Resize the cropped image of labels without interpolation so that it is using the same pixel size as the CT
+                        # reconstruction
+                        voxel_size = [image_geometry.voxel_size_x, image_geometry.voxel_size_y]
+                        scaling_factors = [voxel_size[0] / original_pixel_size[0], voxel_size[1] / original_pixel_size[1]]
+
+                        labelled_resized = resize(
+                            labels_cropped,
+                            (round(labels_cropped.shape[0] / scaling_factors[0]),
+                                round(labels_cropped.shape[1] /scaling_factors[1])),
+                            anti_aliasing=False,
+                            preserve_range=True,
+                            order=0
+                        )
+
+                        # 2. Pad it with 0s so that it is the same number of pixels as the CT reconstruction
+                        labels_padded = pad_image(labelled_resized, reconstruction.array.shape)
+
+                        # 3. Save the image
+                        metadata = {
+                            'spacing': [image_geometry.voxel_size_x, image_geometry.voxel_size_y],
+                            'unit': 'mm'
+                        }
+
+                        extra_tags = {
+                            "sample": sample_id,
+                            "voltage [kV]": voltage_kV,
+                            "SOD [mm]": SOD_mm,
+                            "exposure [s]": exposure_s,
+                            "current [uA]": current_uA,
+                        }
+
+                        imwrite(label_fname + ".tiff",
+                                labels_padded,
+                                imagej=True,
+                                metadata=metadata,
+                                resolution=[1.0 / image_geometry.voxel_size_x, 1.0 / image_geometry.voxel_size_y]
+                        )
+
+                        # Compute the processing time of this iteration
+                        stop_time = datetime.datetime.now()
+                        duration = (stop_time - start_time).total_seconds()
+                        total_duration += duration
+                        print()
