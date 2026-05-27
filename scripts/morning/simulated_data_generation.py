@@ -147,13 +147,16 @@ for voltage_kV in kV_set:
 
                     # Generate the output file names
                     CT_fname = os.path.join(output_path,
-                        "CT-" + str(sample_id) + "-" + str(voltage_kV) + "-" + str(SOD_mm) + "-" + str(exposure_s) + str(current_uA))
+                        "CT-" + str(sample_id) + "-" + str(voltage_kV) + "-" + str(SOD_mm) +
+                                            "-" + str(exposure_s) + "-" + str(current_uA))
 
                     label_fname = os.path.join(output_path,
-                        "labels-" + str(sample_id) + "-" + str(voltage_kV) + "-" + str(SOD_mm) + "-" + str(exposure_s) + str(current_uA))
+                        "labels-" + str(sample_id) + "-" + str(voltage_kV) + "-" + str(SOD_mm) +
+                                               "-" + str(exposure_s) + "-" + str(current_uA))
 
                     scale_offset_fname = os.path.join(output_path,
-                        "scaleoffset-" + str(sample_id) + "-" + str(voltage_kV) + "-" + str(SOD_mm) + "-" + str(exposure_s) + str(current_uA))
+                        "scaleoffset-" + str(sample_id) + "-" + str(voltage_kV) + "-" + str(SOD_mm) +
+                                                      "-" + str(exposure_s) + "-" + str(current_uA))
 
                     CT_fname = CT_fname.replace(".", "_")
                     label_fname = label_fname.replace(".", "_")
