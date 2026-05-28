@@ -46,6 +46,12 @@ output_path = "./output_data"
 if not os.path.exists(output_path):
     os.makedirs(output_path)
 
+if not os.path.exists(os.path.join(output_path, "CT_data")):
+    os.makedirs(os.path.join(output_path, "CT_data"))
+
+if not os.path.exists(os.path.join(output_path, "Labels")):
+    os.makedirs(os.path.join(output_path, "Labels"))
+
 # Create an OpenGL context
 gvxr.createOpenGLContext(-1, 4, 6, 41)
 gvxr.enablePoissonNoise()
@@ -146,15 +152,15 @@ for voltage_kV in kV_set:
                     print("********************************************************************************")
 
                     # Generate the output file names
-                    CT_fname = os.path.join(output_path,
+                    CT_fname = os.path.join(output_path, "CT_data",
                         "CT-" + str(sample_id) + "-" + str(voltage_kV) + "-" + str(SOD_mm) +
                                             "-" + str(exposure_s) + "-" + str(current_uA))
 
-                    label_fname = os.path.join(output_path,
+                    label_fname = os.path.join(output_path, "Labels",
                         "labels-" + str(sample_id) + "-" + str(voltage_kV) + "-" + str(SOD_mm) +
                                                "-" + str(exposure_s) + "-" + str(current_uA))
 
-                    scale_offset_fname = os.path.join(output_path,
+                    scale_offset_fname = os.path.join(output_path, "CT_data",
                         "scaleoffset-" + str(sample_id) + "-" + str(voltage_kV) + "-" + str(SOD_mm) +
                                                       "-" + str(exposure_s) + "-" + str(current_uA))
 
@@ -236,7 +242,7 @@ for voltage_kV in kV_set:
                         writer.write()
 
                         # Rename the offset file
-                        os.rename(os.path.join(output_path, "scaleoffset.json"),
+                        os.rename(os.path.join(output_path, "CT_data", "scaleoffset.json"),
                                                scale_offset_fname + ".json")
 
                         # Generate the labels
@@ -283,3 +289,5 @@ for voltage_kV in kV_set:
                         duration = (stop_time - start_time).total_seconds()
                         total_duration += duration
                         print()
+
+                        exit()
