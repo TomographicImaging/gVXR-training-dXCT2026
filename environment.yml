@@ -21,6 +21,7 @@ dependencies:
     - "astra-toolbox=*=cuda*"
     - progressbar
     - k3d
+    - pandoc
     - pip
     - pip:
         # Install gVXR via wheel by putting the .whl file in a wheels directory
