@@ -87,6 +87,19 @@ conda activate gvxr-dXCT2026
 - [Segmentation to simulation](notebooks/morning/segmentation-to-CT_scan-simulation.ipynb): 
 Create a CT reconstruction from data simulated using a segmented image to model the sample.
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/TomographicImaging/gVXR-training-dXCT2026/blob/main/notebooks/morning/segmentation-to-CT_scan-simulation.ipynb)
+- [Simulation to ML](scripts/morning/simulated_data_generation.py): This script is very similar to the previous 
+  notebook. It makes use of the "XT H 225" twin. It will, however, run loops over:
+  - 6 samples
+  - SOD: 150 mm +/- 20%
+  - Current: 160 uA +/- 30%
+  - Exposures: [0.5, 1.0, 1.42, 2.0] seconds, and 
+  - Voltages in the range [180, 225].
+
+# Total number of simulations
+number_of_samples = 6
+total_number_simulations = number_of_samples * len(kV_set) * len(current_uA_set) * len(exposure_s_set) * len(SOD_mm_set)
+
+# Iterate through all the settings
 
 ## How to find help
 
