@@ -57,7 +57,7 @@ gvxr.createOpenGLContext(-1, 4, 6, 41)
 gvxr.enablePoissonNoise()
 
 # Create a digital twin
-# We'll make use of the "XT H 225 ST 2x" twin.
+# We'll make use of the "XT H 225" twin.
 twin = createDigitalTwin(name="XT H 225")
 
 # Alter the twin specification to only generate 3 rows of simulated data
@@ -290,4 +290,3 @@ for voltage_kV in kV_set:
                         total_duration += duration
                         print()
 
-                        exit()
