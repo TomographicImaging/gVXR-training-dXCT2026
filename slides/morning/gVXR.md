@@ -19,6 +19,7 @@ lang: en-gb
 
 # Aims of this session
 
+- Discover what gVXR is;
 - Become familiar with the Beer-Lambert law to compute the attenuation of X-rays by matter;
 - Describe how the Beer-Lambert law is implemented in gVirtualXray;  
 - Learn how to generate realistic, XCT projection data using the [**gVXR** package](https://gvirtualxray.sourceforge.io/), 
@@ -27,23 +28,25 @@ lang: en-gb
 
 # Contents
 
-1. 
-2. 
-3. 
-4. 
+1. What is gVXR?
+2. What can we scan?
+3. What are the main built-in functionalities?
+4. Implementation of the attenuation law in gVXR
+5. Is gVXR validated?
+6. How to use gVXR?
 
 <!--
 :::::::::::::: {.columns}
 ::: {.column width="40%"}
 contents...
 :::
-::: {.column width="60%"}
+::: {.column width=100%}
 contents...
 :::
 ::::::::::::::
 -->
 
-# What is gVirtualXray (gVXR)?
+# 1. What is gVirtualXray (gVXR)?
 
 ::::: columns
 ::: column
@@ -56,31 +59,42 @@ contents...
 :::
 
 ::: column
-
-![image](img/wireframe_model2.png)
+![Example of triangle meshes showed in wireframe.](img/wireframe_model2.png){width=50%}
 :::
 :::::
 
-> It is an alternative to Monte Carlo methods when scattering[^1] can be ignored or speed is required.
+> It is an alternative to Monte Carlo methods when scattering^1^ can be ignored or speed is required.
 
-[^1]: It may be added in the future
+::: footer
+^1^ Scattering may be added in the future
+:::
 
 # Implementation
 
-- R&D started in the early 2000s, VXI[^2] by Nicolas Freud (INSA-Lyon),
+- R&D started in the early 2000s, VXI^1^ by Nicolas Freud (INSA-Lyon),
   and
 - Its port on GPU when they became programmable (Bangor University,
   2007);
 - Not a ray tracer, but a rasterizer!
-- Implemented in ![C++](img/cpp-logo.png){ height=30px } using ![OpenGL](img/OpenGL-logo.png){ height=30px }
-- Wrapper for ![Python](img/python-logo-generic.svg){ height=30px }, 
-  ![image](img/Rlogo.svg){ height=30px },
-  ![image](img/ruby-crop){ height=30px },
-  ![image](img/Tcl-powered.svg){ height=30px },
-  ![image](img/Logo_C_sharp.svg){ height=30px }, 
-  ![Java](img/java-ar21.svg){ height=30px }, and ![GNU Octave](img/gnu-octave-logo-lnx.png){ height=30px }.
+- Reimplementation from scratch as open source project on ![SourceForge](img/sflogo.svg){ height=30px }
+  - Registered on 2013-12-01;
+  - 4544 commits on 2026-09-09 (v2.1.0). (average of 1 commit a day in 12.5 years)
+  - Implemented in ![C++](img/cpp-logo.png){ height=30px } using ![OpenGL](img/OpenGL-logo.png){ height=30px }
+    - 173 C++ source files, 21036 lines of comments, 89950 lines of code
+    - 123 C++ header files, 17482 lines of comments, 61203 lines of code
+    - 69 CMake files, 1686 lines of comments, 5273 lines of code
+    - 81 GLSL files, 4249 lines of comments, 2965 lines of code
+    - 599 source code files, 49881 lines of comments, 199341 lines of code
+  - Wrapper for ![Python](img/python-logo-generic.svg){ height=30px }, 
+    ![R](img/Rlogo.svg){ height=30px },
+    ![Ruby](img/ruby-crop.png){ height=30px },
+    ![Tcl](img/Tcl-powered.svg){ height=30px },
+    ![C#](img/Logo_C_sharp.svg){ height=30px }, 
+    ![Java](img/java-ar21.svg){ height=30px }, and ![GNU Octave](img/gnu-octave-logo-lnx.png){ height=30px }.
 
-[^2]: [@FREUD2006175].
+::: footer
+^1^ Freud et al. (2006), “Fast and robust ray casting algorithms for virtual X-ray imaging”
+:::
 
 # Cross-platform
 
@@ -110,33 +124,8 @@ contents...
 - Containerisation with ![Docker.](img/Docker_logo.svg){ height=30px }
 :::
 :::::
-::::::
 
-# Beer-Lambert law (monochromatic)
-
-$$pixel(x,y) = N_{in} \times E  \times \exp\left({-\sum_i \mu_i(E,\rho,Z) \; L_p(i, x, y})\right)$$
-
-- $N_{in}$ is the number of photons of Energy $E$ emitted by the source
-- $\mu_i(E)$ is the linear attenuation coefficient at Energy $E$ of the
-  i-th material;
-- $L_p(i, x, y)$ is the path length of the ray from the X-ray source to
-  pixel $(x,y)$ crossing the $i$-th material.
-
-# Final model
-
-$$
-pixel(x,y) = gain \times {\sum_u\sum_v \mathrm{PSF}(u,v)} \times \sum_k\sum_j {\mathbf{R}(E_j)} \times \\{\mathrm{Poisson}}\left(N_{in}(E_j) \; \exp\left({-\sum_i \mu_i(E_j,\rho,Z) \; L_p(i, k, x{-u}, y{-v})}\right)\right)
-$$
-
-- $gain$ is the detector gain
-- $PSF$ is the impulse response of the detector, a low-pass convolution
-  filter;
-- Focal spot ($\sum_k$)
-- Polychromatism ($\sum_j$)
-- $\mathbf{R}(E_j)$ is the energy response of the detector, a lookup
-  table to mimic scintillators.
-
-# What can we scan?
+# 2. What can we scan?
 
 - Surface mesh from files (all common formats are supported, inc. STL)
 
@@ -144,16 +133,16 @@ $$
 
 ![Welsh dragon](img/models/welsh-dragon.png){ width=30% }
 
-# What can we scan?
+# 2. What can we scan?
 
 - Surface mesh from files (all common formats are supported, inc. STL)
 - Multi-part models using multiple different materials
 
 *Lungman anthropomorphic chest phantom (Kyoto Kagaku, Tokyo, Japan)*
 
-![Paediatric phantom from the ERROR project.](img/models/pediatric_model.png){ width=30% }
+![Paediatric phantom from the ERROR project.](img/models/pediatric_model.png){ width=15% }
 
-# What can we scan?
+# 2. What can we scan?
 
 - Surface mesh from files (all common formats are supported, inc. STL)
 - Multi-part models using multiple different materials
@@ -163,7 +152,7 @@ $$
 
 ![Volumetric mesh made of tetrahedrons.](img/models/tetrahedon.png){ width=30% }
 
-# What can we scan?
+# 2. What can we scan?
 
 - Surface mesh from files (all common formats are supported, inc. STL)
 - Multi-part models using multiple different materials
@@ -174,7 +163,7 @@ $$
 |------------------------------------------------------|-------------------------------------------------------|-------------------------------------------------------|------------------------------------------------------|
 | ![](img/models/implicit_modelling1.png){ width=80% } | ![](img/models/implicit_modelling2.png){ width=80% } | ![](img/models/implicit_modelling3.png){ width=80% } | ![](img/models/implicit_modelling4.png){ width=80% } |
 
-# What can we scan?
+# 2. What can we scan?
 
 - Surface mesh from files (all common formats are supported, inc. STL)
 - Multi-part models using multiple different materials
@@ -182,91 +171,394 @@ $$
 - Implicit modelling (organic-looking $n$-dimensional isosurfaces)
 - Customisable built-in phantoms
 
-| Welsh dragon | Step wedge | Foam                                  | Geometric shapes                         | Lungman                                            |
-|--------------|------------|---------------------------------------|------------------------------------------|----------------------------------------------------|
+| Welsh dragon | Step wedge | Foam                                  | Geometric shapes                            | Lungman                                            |
+|--------------|------------|---------------------------------------|---------------------------------------------|----------------------------------------------------|
 | ![](img/models/welsh-dragon.png){ height=200px } | ![](img/models/step-wedge.png){ height=200px } | ![](img/models/foam.png){ height=200px } | ![](img/models/cyl_sph.png){ height=200px } | ![](img/models/lungman_wireframe.png){ height=200px } |
+ |                          | Fully customisable | Fully customisable | Cuboids, spheres, cylinders, | To appear |
+ |                          |  |  | inc. boolean operations                     |  |
 
-# Other built-in functionalities
+# 3. Built-in functionalities
 
-:::::: columns
+::::: columns
 ::: column
-0.45
-
-- Impulse response of detectors
-
-- [Parallel beams]{.alert}, [point sources]{.alert}, [focal
-  spots]{.alert}
-
-- [Mono/Poly chromatic spectra]{.alert}
-
-  - including kV and beam filtration
-
-- [Photon noise]{.alert} (calibrated on Geant4/Gate)
-
-- [Scintillation]{.alert}
-
-- [Flexible material composition]{.alert}
-
-- Interactive 3D visualization\
-
-Text in [red]{.alert} marks components validated against Monte Carlo
-simulations
+- Impulse response of detectors;
 :::
 
-:::: column
-0.55
+::: column
+![LSF](img/LSF.png){ width=20% }
 
-::: examples
+![Image comparision (with/without blur)](img/LSF-comparison.png){ width=50% }
 :::
-::::
+:::::
+
+# 3. Built-in functionalities
+
+::::: columns
+::: column
+- Impulse response of detectors;
+- **Parallel beams**, **point sources**, & **focal spots**^1^;
+:::
+
+::: column
+| Focal spot type | Size |
+|-----------------|------|
+| Point | 0.0 mm \|
+| Cube | $0.25 \times 0.25 \times 0.25$ mm |
+| Square | $0.25 \times 0.25$ mm |
+| Rectangle | $0.25 \times 0.5$ mm |
+| Rectangle rotated by 25&deg; | $0.25 \times 0.5$ mm |
+
+![Focal spot type comparision](img/focal_spot-profiles.png){ width=60% }
+:::
+:::::
+
+::: footer
+^1^ Text in **bold characters** marks components validated against Monte Carlo simulations}
+:::
+
+# 3. Built-in functionalities
+
+::::: columns
+::: column
+- Impulse response of detectors;
+- **Parallel beams**, **point sources**, & **focal spots**^1^;
+- **Monochromatic** & **polychromatic** spectra;
+:::
+
+::: column
+![Spectrum comparision](img/spectra.png){ width=80% }
+:::
+:::::
+
+::: footer
+^1^ Text in **bold characters** marks components validated against Monte Carlo simulations}
+:::
+
+# 3. Built-in functionalities
+
+::::: columns
+::: column
+- Impulse response of detectors;
+- **Parallel beams**, **point sources**, & **focal spots**^1^;
+- **Monochromatic** & **polychromatic** spectra;
+  - including kV and beam filtration;
+:::
+
+::: column
+![Image comparision (with/without filtration)](img/images-polychromatism.png){ width=100% }
+
+![Profile comparision (with/without filtration)](img/profiles-polychromatism.png){ width=80% }
+:::
+:::::
+
+::: footer
+^1^ Text in **bold characters** marks components validated against Monte Carlo simulations}
+:::
+
+# 3. Built-in functionalities
+
+::::: columns
+::: column
+- Impulse response of detectors;
+- **Parallel beams**, **point sources**, & **focal spots**^1^;
+- **Monochromatic** & **polychromatic** spectra;
+  - including kV and beam filtration;
+- **Photon noise** (calibrated on Geant4/Gate);
+:::
+
+::: column
+![Poisson noise comparison (gVXR vs. Geant4)](img/compare-6000000photons.png){ width=100% }
+:::
+:::::
+
+::: footer
+^1^ Text in **bold characters** marks components validated against Monte Carlo simulations}
+:::
+
+# 3. Built-in functionalities
+
+::::: columns
+::: column
+- Impulse response of detectors;
+- **Parallel beams**, **point sources**, & **focal spots**^1^;
+- **Monochromatic** & **polychromatic** spectra;
+  - including kV and beam filtration;
+- **Photon noise** (calibrated on Geant4/Gate);
+- **Scintillation**;
+:::
+
+::: column
+![Scintillator comparison (gVXR vs. Geant4)](img/energy_responses-noise-images-profiles.png){ width=100% }
+:::
+:::::
+
+::: footer
+^1^ Text in **bold characters** marks components validated against Monte Carlo simulations}
+:::
+
+# 3. Built-in functionalities
+
+::::: columns
+::: column
+- Impulse response of detectors;
+- **Parallel beams**, **point sources**, & **focal spots**^1^;
+- **Monochromatic** & **polychromatic** spectra;
+  - including kV and beam filtration;
+- **Photon noise** (calibrated on Geant4/Gate);
+- **Scintillation**;
+- **Flexible material composition**;
+:::
+
+::: column
+![Chemical elements](img/material_element.png){ width=80% }
+
+![Compounds](img/material_compound.png){ width=80% }
+
+![Mixtures](img/material_mixture.png){ width=80% }
+:::
+:::::
+
+::: footer
+^1^ Text in **bold characters** marks components validated against Monte Carlo simulations}
+:::
+
+# 3. Built-in functionalities
+
+::::: columns
+::: column
+- Impulse response of detectors;
+- **Parallel beams**, **point sources**, & **focal spots**^1^;
+- **Monochromatic** & **polychromatic** spectra;
+  - including kV and beam filtration;
+- **Photon noise** (calibrated on Geant4/Gate);
+- **Scintillation**;
+- **Flexible material composition**;
+- Interactive 3D visualization
+:::
+
+::: column
+![3D visualisation](img/visualisation.mp4){ width=50% }
+:::
+:::::
+
+::: footer
+^1^ Text in **bold characters** marks components validated against Monte Carlo simulations}
+:::
+
+# 4. Beer-Lambert law (monochromatic)
+
+$$
+pixel(x,y)  = 
+  E \times \mathbf{D}(E) \; \exp\left({-\sum_i \mu_i
+(E) \; \mathbf{d}_{i}(x,y)}\right)
+$$
+
+- $E$ is the Energy $E$ emitted by the source
+- $\mathbf{D}(E)$ is the number of photons of Energy $E$ emitted by the source
+- $\mu_i(E)$ is the linear attenuation coefficient at Energy $E$ of the
+  $i$-th material;
+- $\mathbf{d}_i(x, y)$ is the path length of the ray from the X-ray source to
+  pixel $(x,y)$ crossing the $i$-th material.
+
+# 4. Beer-Lambert law (polychromatic)
+
+$$
+pixel(x,y)  = 
+  \sum_j E_j \times \mathbf{D}(E_j) \; \exp\left({-\sum_i \mu_i
+(E_j) \; \mathbf{d}_{i}(x,y)}\right)
+$$
+
+- Polychromatism ($\sum_j$): Images are integrated over $J$ energy bins.
+
+# 4. Beer-Lambert law (polychromatic + focal spot)
+
+$$
+pixel(x,y)  = 
+  \sum_k \sum_j E_j \times \mathbf{D}(E_j) \; \exp\left({-\sum_i \mu_i
+(E_j) \; \mathbf{d}_{i,k}(x,y)}\right)
+$$
+
+- **Polychromatism $\left(\sum_j\right)$:** Images are integrated over $J$ energy bins.
+- **Focal spot $\left(\sum_k\right)$:** Images are integrated over $K$ point sources.
+
+# 4. Final model
+
+$$
+pixel(x,y)  = \mathrm{Gauss}(\theta, \sigma) + gain \times 
+  \left(PSF * \sum_k \sum_j \mathbf{R}(E_j) \times \mathrm{Poisson}\left(\mathbf{D}(E_j) \; \exp\left({-\sum_i \mu_i
+(E_j) \; \mathbf{d}_{i,k}(x,y)}\right)\right)\right)
+$$
+
+- **Electronic noise $\left(\mathrm{Gauss}(\theta, \sigma)\right)$:** additive Gaussian noise of average $\theta$ 
+  and standard corresponding to the dark field image 
+  deviation $\sigma$
+- **Detector gain $\left(gain\right)$:** a multiplicative factor
+- **Detector blur $\left(PSF\right)$:** 2D impulse response of the detector, a low-pass convolution
+  filter;
+- **Scintillator $\left(\mathbf{R}(E_j)\right)$:** energy response of the detector, a lookup
+  table.
+- **Photonic noise $\left(\mathrm{Poisson}\right)$:** Poisson noise that depends on the number of photons.
+
+# 5. Is gVXR validated? ^1^
+
+::::: columns
+::: column
+-   Against state-of-the art **Monte Carlo simulation**, namely Geant4/Gate
+:::
+
+::: column
+**10 days with GATE vs. 1 second with gVirtualXray for $128 \times 128$
+pixels**
+![Image comparison (gVXR vs. Geant4)](img/full_comparison-paediatrics-crop.png){width="70%"}\
+![Profile comparison (gVXR vs. Geant4)](img/profiles-paediatrics-crop.png){width="70%"}\
+MAPE: 3.12%, ZNCC: 99.96%, SSIM: 0.99
+:::
 ::::::
-:::::::
 
-:::: frame
-Setting up the simulation
+::: footer
+^1^ Pointon et al. (2023), “Simulation of X-ray projections on GPU: Benchmarking gVirtualXray with clinically realistic
+phantoms”
+:::
+
+# 5. Is gVXR validated? ^1^
+
+::::: columns
+::: column
+-   Against state-of-the art **Monte Carlo simulation**, namely Geant4/Gate
+-   Against **DRRs** computed from experimental data acquired with a **clinically utilized device**
+:::
+
+::: column
+![Image comparison (gVXR vs. real DRR)](img/lungman-compare-projs-plastimatch-rl-crop.png){width=100%}\
+![Profile comparison (gVXR vs. real DRR)](img/lungman-profiles-projection-postprocessing-crop.png){width=100%}\
+MAPE: 1.76%, ZNCC: 99.66%, SSIM: 0.98
+:::
+::::::
+
+::: footer
+^1^ Pointon et al. (2023), “Simulation of X-ray projections on GPU: Benchmarking gVirtualXray with clinically realistic
+phantoms”
+:::
+
+
+
+# 5. Is gVXR validated? ^1^
+
+::::: columns
+::: column
+-   Against state-of-the art **Monte Carlo simulation**, namely Geant4/Gate
+-   Against **DRRs** computed from experimental data acquired with a **clinically utilized device**
+-   Against **digital radiographs** acquired with a **clinically utilized device**
+:::
+
+::: column
+![Image comparison (gVXR vs. real DR)](img/lungman-projection-harder-crop.png){width=100%}\
+![Profile comparison (gVXR vs. real DR)](img/lungman-profiles-projection-postprocessing-crop.png){width=100%}\
+MAPE: 1.56%, ZNCC: 98.91%, SSIM: 0.94
+:::
+::::::
+
+::: footer
+^1^ Pointon et al. (2023), “Simulation of X-ray projections on GPU: Benchmarking gVirtualXray with clinically realistic
+phantoms”
+:::
+
+
+# 5. Is gVXR validated? ^1^
+
+::::: columns
+::: column
+-   Against state-of-the art **Monte Carlo simulation**, namely Geant4/Gate
+-   Against **DRRs** computed from experimental data acquired with a **clinically utilized device**
+-   Against **digital radiographs** acquired with a **clinically utilized device**
+-   Against **CT slices** from experimental data acquired with a **clinically utilized device**
+:::
+
+::: column
+![Image comparison (gVXR vs. real CT)](img/CT-last-slice-crop.png){width=100%}\
+![Profile comparison (gVXR vs. real CT)](img/profiles-lungman_CT-last_slice-crop.png){width=100%}\
+MAPE: 4.46%, ZNCC: 99.05%, SSIM: 0.82
+:::
+::::::
+
+::: footer
+^1^ Pointon et al. (2023), “Simulation of X-ray projections on GPU: Benchmarking gVirtualXray with clinically realistic
+phantoms”
+:::
+
+# Is gVXR fast? 
+
+It was initially used in realtime medical VR for training
+purposes. So speed and accuracy are both requirements and tradeoffs must
+be found!
+
+::::: columns
+::: column
+-   Spectrum: polychromatic with 50 energy bins
+-   Resolution: $\text{100} \times \text{100}$ pixels
+-   Flat field images: 10
+-   Number of threads for the Monte Carlo simulation: 24
+-   CPU: AMD Ryzen 5900X
+-   GPU: NVIDIA GeForce RTX 4060 Ti
+:::
+
+::: column
+![Comparison: Geant4 vs gVXR](img/compare-775000photons.png){width=80%}
+:::
+:::::
+::::::
+
+# Runtimes
+
+  ---------------------------------- --------------------- -------------------- ---------------------
+           **Photon count**           **Execution time**    **Execution time**   **Speed-up factor**
+                                         **with Gate**        **with gVXR**     
+                                      **\[in hh:mm:ss\]**     **\[in ms\]**     
+      $\text{100,000} \times 11$           00:01:47                 32                  3,378
+      $\text{275,000} \times 11$           00:01:47                 32                  3,307
+      $\text{775,000} \times 11$           00:01:48                 35                  3,090
+     $\text{2,150,000} \times 11$          00:01:51                 34                  3,273
+     $\text{6,000,000} \times 11$          00:01:57                 31                  3,812
+    $\text{16,000,000} \times 11$          00:02:22                 36                  3,958
+    $\text{46,000,000} \times 11$          00:05:24                 40                  8,059
+    $\text{130,000,000} \times 11$         00:13:24                 36                 22,433
+    $\text{360,000,000} \times 11$         00:36:34                 36                 60,783
+   $\text{1,000,000,000} \times 11$        01:41:07                 31                 194,208
+  ---------------------------------- --------------------- -------------------- ---------------------
+
+# 6. How to use gVXR?
 
 - Write the code to describe the previous parameters in pure
-  [](https://github.com/TomographicImaging/gVXR-SPIE2024/blob/main/code/dragon-without-JSON.ipynb),
-  ![image](cpp-logo){height="1.25\\baselineskip"},
-  ![image](Rlogo){height="1.25\\baselineskip"},
-  ![image](ruby-crop){height="1.25\\baselineskip"},
-  ![image](Tcl-powered){height="1.25\\baselineskip"} ,
-  ![image](Logo_C_sharp){height="1.25\\baselineskip"} , , and
+  ![Python](img/python-logo-generic.svg){height=30px},
+  ![C++](img/cpp-logo.png){height=30px},
+  ![R](img/Rlogo.svg){ height=30px },
+  ![Ruby](img/ruby-crop.png){ height=30px },
+  ![Tcl](img/Tcl-powered.svg){ height=30px },
+  ![C#](img/Logo_C_sharp.svg){ height=30px }, 
+  ![Java](img/java-ar21.svg){ height=30px }, and 
+  ![GNU Octave](img/gnu-octave-logo-lnx.png){ height=30px }.
+- Or use a more human friendly ![JSON](img/json_logo_icon_168490.svg){ height=30px } file.
+- To simplify the ![Python](img/python-logo-generic.svg){height=30px} code.
 
-- Or use a human friendly [
-  file](https://github.com/TomographicImaging/gVXR-SPIE2024/blob/main/results/dragon.json)
+# Easy installation for ![Python](img/python-logo-generic.svg){height=60px}
 
-- To simplify the [
-  code](https://github.com/TomographicImaging/gVXR-SPIE2024/blob/main/code/dragon-with-JSON.ipynb).
-
-::: block
-Remark [Easy installation for using
-with](https://pypi.org/project/gvxr/)
+- Available on ![PyPi](img/PyPI_logo.svg){height=90px}: [https://pypi.org/project/gvxr/](https://pypi.org/project/gvxr/)
+- For MS Windows (x86_64 architecture only);
+- GNU/Linux (x86_64 and aarch64 architectures)
 
 ``` {numbers="none"}
 pip install gvxr
 ```
-:::
-::::
 
-::::: frame
-fileVisualisation window
+# JSON file (visualisation window)
 
-:::: center
-::: minipage
 ``` {.JSON language="JSON" startFrom="1"}
 {
     "Window size": [640, 480],
 ```
-:::
-::::
-:::::
 
-::::: frame
-fileX-ray source
+# JSON file (X-ray source)
 
-:::: center
-::: minipage
 ``` {.JSON language="JSON" startFrom="3"}
 "Source": {
         "Position": [0.0, -1500.0, 0.0, "mm"],
@@ -281,15 +573,9 @@ fileX-ray source
         }
     },
 ```
-:::
-::::
-:::::
 
-::::: frame
-fileX-ray detector
+# JSON file (X-ray detector)
 
-:::: center
-::: minipage
 ``` {.JSON language="JSON" startFrom="15"}
 "Detector": {
         "Position": [0.0, 400.0, 0.0, "mm"],
@@ -306,15 +592,9 @@ fileX-ray detector
         }
     },    
 ```
-:::
-::::
-:::::
 
-::::: frame
-fileSample
+# JSON file (Sample)
 
-:::: center
-::: minipage
 ``` {.JSON language="JSON" startFrom="29"}
 "Samples": [
         {
@@ -327,15 +607,9 @@ fileSample
         }
     ],
 ```
-:::
-::::
-:::::
 
-::::: frame
-fileCT scan acquisition
+# JSON file (CT scan acquisition)
 
-:::: center
-::: minipage
 ``` {.JSON language="JSON" startFrom="39"}
 "Scan": {
         "OutFolder": "projections",
@@ -351,15 +625,9 @@ fileCT scan acquisition
     }
 }
 ```
-:::
-::::
-:::::
 
-::::: frame
-    CT simulation
+# ![Python](img/python-logo-generic.svg){height=60px} file (CT simulation)
 
-:::: center
-::: minipage
 ``` {.python language="Python" startFrom="1"}
 from gvxrPython3 import json2gvxr # Simulate X-ray images
 
@@ -371,15 +639,9 @@ json2gvxr.initSamples(verbose=0)
 json2gvxr.initScan()
 json2gvxr.doCTScan()
 ```
-:::
-::::
-:::::
 
-::::: frame
-    CT reconstruction
+# ![Python](img/python-logo-generic.svg){height=60px} file (CT reconstruction)
 
-:::: center
-::: minipage
 ``` {.python language="Python" startFrom="1"}
 from gvxrPython3.JSON2gVXRDataReader import *
 from cil.processors import TransmissionAbsorptionConverter
@@ -398,12 +660,8 @@ fdk =  FDK(acquisition_data, ig)
 recon = fdk.run()
 TIFFWriter(data=recon, file_name="slices", "out")).write()
 ```
-:::
-::::
-:::::
 
-::::::: frame
-#     Modern Web-based GUI
+# Modern Web-based GUI
 
 :::::: columns
 ::: column
@@ -425,297 +683,6 @@ Or visit <https://webct.io/>
 :::::::
 
 
-
-
-
-# 1. Simulate accurate X-ray images
-![img_1.png](img_1.png)
-# 1. What is a point operator?
-![img_2.png](img_2.png)
-- Simplest image filtering technique in regard to complexity and computing time.
-- They require no data from other pixels to process an input pixel into an output pixel.
-- Simply calculate a single-parameter function with the input pixel as the parameter.
-
-# 1. What is a point operator?
-
-- Modify each pixel independently from one another
-- The simplest case: multiplication and addition:
-
-$$g(x,y) = gain \times f(x,y) + bias$$
-
-with $g$ the output image, $f$ the input image, and $(x,y)$ the pixel coordinate ($x$-th column, and $y$-th-row).
-
-- Which one ($gain$ or $bias$) will change the image brightness, and
-- which will change image contrast?
-
-# Note to students:
-
-- Most algorithms are developed for greyscale images;
-- Simpler format;
-- Faster processing; but
-- You can often extend the algorithms to colour images (e.g. repeat the operations for each colour channel).
-
-# 2. Improving the brightness and contrast
-
-# 2. Improving the brightness and contrast
-
-- Known as "Contrast enhancement"
-
-![Image with a very poor contrast](img/Chapter 5 - Introduction to image processing41.png)
-
-# Intensity histogram
-
-- Is a representation of the distribution of pixel values in an image
-- Plots the number of pixels for each value
-  - X-axis: pixel intensity
-  - Y-axis: pixel count for each pixel intensity
-
-![Corresponding histogram](img/Chapter 5 - Introduction to image processing42.png)
-
-
-# Exercise
-
-- Draw the intensity histogram of the following image:
-
-$$\left( \begin{array}{ccc}
-0 & 5 & 0 \\
-0 & 5 & 0 \\
-1 & 3 & 0 \end{array} \right)$$
-
-# Exercise
-
-- Draw the intensity histogram of the following image:
-
-$$\left( \begin{array}{ccc}
-0 & 5 & 0 \\
-0 & 5 & 0 \\
-1 & 3 & 0 \end{array} \right)$$
-
-- For each pixel value of the dynamic range, find how many times it has been used.
-
-| Pixel intensity | Count |
-|-----------------|-------|
-| 0               |       |
-| 1               |       |
-| 2               |       |
-| 3               |       |
-| 4               |       |
-| 5               |       |
-
-# Exercise
-
-- For each pixel value of the dynamic range, find how many times it has been used.
-
-| Pixel intensity | Count |
-|-----------------|-------|
-| 0               | 5     |
-| 1               | 1     |
-| 2               | 0     |
-| 3               | 1     |
-| 4               | 0     |
-| 5               | 2     |
-
-- Plot the data using a bar chart.
-
-![Corresponding histogram](img/histogram.png)
-
-- Remember to **ALWAYS** add a label to the graph axes.
-
-# Exercise
-
-- Sometimes, the frequency in % is provided instead of the count.
-
-| Pixel intensity | Count | Frequency |
-|-----------------|-------|-----------|
-| 0               | 5     | $100 \times 5 / 9$% |
-| 1               | 1     | $100 \times 1 / 9$% |
-| 2               | 0     | $100 \times 0 / 9$% |
-| 3               | 1     | $100 \times 1 / 9$% |
-| 4               | 0     | $100 \times 0 / 9$% |
-| 5               | 2     | $100 \times 2 / 9$% |
-
-# Exercise
-
-- Sometimes, the frequency in % is provided instead of the count.
-
-| Pixel intensity | Count | Frequency |
-|-----------------|-------|-----------|
-| 0               | 5     | 56% |
-| 1               | 1     | 11% |
-| 2               | 0     | 0% |
-| 3               | 1     | 11% |
-| 4               | 0     | 0% |
-| 5               | 2     | 22% |
-
-![Corresponding histogram](img/histogram-percent.png)
-
-# Back to the example: Contrast enhancement
-
-![Image with a poor contrast](img/Chapter 5 - Introduction to image processing43.png)
-
-# See the image histogram:
-
-* Plots the number of pixels for each value
-
-![Image with a poor contrast](img/Chapter 5 - Introduction to image processing44.png)
-
-* Most of the intensity values used are in the middle of the dynamic range, the image is grey with poor contrast.
-  * No black pixels,
-  * No white pixels,
-  * Just grey pixels.
-* **To improve the contrast, we want to use the whole range of possible values (0 to 255),** enable
-  * Black pixels,
-  * White pixels, and
-  * Grey pixels.
-
-# How? Make the min = 0:
-
-- Subtract the smallest pixel value of the image to all the pixels:
-- $Image'(i,j) = Image(i,j) - \min(Image)$
-- The image will look dark.
-
-# How? Make the min = 0:
-
-- Subtract the smallest pixel value of the image to all the pixels:
-- $Image'(i,j) = Image(i,j) - \min(Image)$
-- The image will look dark.
-
-| Notation | Image | Corresponding histogram |
-|----------|-------|-------------------------|
-| $Image(i,j)$ | <img src="img/Chapter 5 - Introduction to image processing45.png" width=500px alt="original image" /> | <img src="img/Chapter 5 - Introduction to image processing46.png" width=310px alt="its histogram" /> |
-| $Image'(i,j)$ | <img src="img/Chapter 5 - Introduction to image processing48.png" width=500px alt="transformed image" /> | <img src="img/Chapter 5 - Introduction to image processing47.png" width=310px alt="its histogram" /> |
-
-# How? Normalise the image between 0 and 1:
-
-- Divide all the pixels with the range of pixel values $(\max(Image) - \min(Image))$
-- $Image''(i,j) = \frac{Image(i,j) - \mathrm{min}(Image)}{\max(Image) - \min(Image)}$
-
-# How? Rescale the image so that the max is 255:
-
-- Multiply all the pixels with 255
-- $Image'''(i,j) = 255 \times \frac{Image(i,j) - \mathrm{min}(Image)}{\max(Image) - \min(Image)}$
-
-# How? Rescale the image so that the max is 255:
-
-- Multiply all the pixels with 255
-- $Image'''(i,j) = 255 \times \frac{Image(i,j) - \mathrm{min}(Image)}{\max(Image) - \min(Image)}$
-
-| Notation | Image | Corresponding histogram |
-|----------|-------|-------------------------|
-| $Image'(i,j)$ | <img src="img/Chapter 5 - Introduction to image processing48.png" width=500px alt="transformed image" /> | <img src="img/Chapter 5 - Introduction to image processing47.png" width=310px alt="its histogram" /> |
-| $Image''(i,j)$ | <img src="img/Chapter 5 - Introduction to image processing57.png" width=500px alt="transformed image" /> | <img src="img/Chapter 5 - Introduction to image processing56.png" width=310px alt="its histogram" /> |
-
-# More general case
-
-- Smallest pixel value does not have to be 0
-- Largest pixel value does not have to be 255
-- See [http://scikit-image.org/docs/dev/user_guide/data_types.html](http://scikit-image.org/docs/dev/user_guide/data_types.html)
-- See [Lab 2](https://github.com/effepivi/ICE-3111-Computer_Vision/tree/main/Labs/Lab-02):
-
-<img src="https://github.com/effepivi/ICE-3111-Computer_Vision/raw/main/Labs/Lab-02/img/visualisation-eq.png" width=700px alt="General equation" />
-
-- with $f$ original image and $g$ the visualisation image.
-- In I the previous example,
-  - $\min(g) = 0$,
-  - $\max(g) = 255$,
-  - $T_{low} = \min(f)$, and
-  - $T_{high} = \max(f)$
-
-# 3. Compute the negative image
-
-# 3. Compute the negative image
-
-![Positive](img/Chapter 5 - Introduction to image processing63.png)
-![Negative](img/Chapter 5 - Introduction to image processing64.png)
-
-    Consider an image in UINT8
-
-- 0 should become 255
-- 1 should become 254
-- 2 should become 253
-- …
-- 255 should become 0
-
-Given an intensity, _i_ , what is the new intensity?
-
-# 3. Compute the negative image
-
-- Consider an image in UINT8
-- Given an intensity, _i_ , what is the new intensity?
-- $Negative(x,y) = 255 - Positive(x,y)$, and
-- $Positive(x,y) = 255 - Negative(x,y)$
-
-# More general case
-
-- Smallest pixel value does not have to be 0
-- Largest pixel value does not have to be 255
-- See [http://scikit-image.org/docs/dev/user_guide/data_types.html](http://scikit-image.org/docs/dev/user_guide/data_types.html)
-- $Negative(i,j) = \min(Positive) + \max(Positive) - Positive(i,j)$
-- Other equations are possible
-- Must ensure that the $Netagive$ of the $Negative$ is the $Positive$.
-
-```c
-bool i = false;
-!i == true;
-```
-
-# 4. Image blending
-
-- Cross-dissolve between two images
-
-$$g(x,y) - (1 - \alpha) f_0(x,y) + \alpha f_1(x,y)$$
-
-where $\alpha$ is between 0 and 1
-
-# Where is it used?
-
-Example: [Transitions between two scenes in cinema](https://en.wikipedia.org/wiki/Film_transition)
-
-- Fade in/out
-- Dissolve
-
-[![Example](img/300px--A2o_dissolve.ogv.jpg)](https://upload.wikimedia.org/wikipedia/commons/6/6c/A2o_dissolve.ogv)
-(From wikimedia: [https://en.wikipedia.org/wiki/File:A2o_dissolve.ogv](https://en.wikipedia.org/wiki/File:A2o_dissolve.ogv))
-# Exercise
-
-- Derive this formula in a `for` loop
-
-$$g(x,y) = (1 - \alpha) f_0(x,y) + \alpha f_1(x,y)$$
-
-that blends the image $f_0$ and $f_1$ over $t$ iterations:
-
-```c
-for (int i = 0; i < t; ++i)
-{
-  float alpha = ???;
-
-  g = (1.0 - alpha) * f_0 + alpha f_1;
-}
-```
-
-# 5. Image matting and compositing
-
-![ALT](img/Chapter 6 - Point operators and linear filtering87.png)
-
-Matting – the process of extracting an object from the original image
-
-Compositing – the process of inserting the object into a different image
-
-It is convenient to represent the extracted object as an RGBA image
-
-
-# Transparency, alpha channel
-
-![ALT](img/Chapter 6 - Point operators and linear filtering88.png)
-
-* RGBA – red. green. blue. alpha
-  * alpha = 0 – transparent pixel
-  * alpha = 1 – opaque pixel
-* Compositing
-  * Final pixel value:
-  * Multiple layers:
-
-Linear interpolation
 
 
 
