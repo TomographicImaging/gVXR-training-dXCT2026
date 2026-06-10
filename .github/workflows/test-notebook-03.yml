@@ -3,13 +3,13 @@ name: Test notebook 03
 on:
   push:
     paths:
-      - "notebooks/afternoon/03*.ipynb"
+      - "notebooks/afternoon/03_model_eval_and_inference.ipynb"
       - "notebooks/afternoon/utils.py"
       - "environment.yml"
       - ".github/workflows/test-notebook-03.yml"
   pull_request:
     paths:
-      - "notebooks/afternoon/03*.ipynb"
+      - "notebooks/afternoon/03_model_eval_and_inference.ipynb"
       - "notebooks/afternoon/utils.py"
       - "environment.yml"
       - ".github/workflows/test-notebook-03.yml"
@@ -49,8 +49,8 @@ jobs:
         run: |
           jupyter nbconvert \
             --to notebook \
-            --execute notebooks/afternoon/03_live_inference_pretrained_unet.ipynb \
-            --output executed_03_live_inference_pretrained_unet.ipynb \
+            --execute notebooks/afternoon/03_model_eval_and_inference.ipynb \
+            --output executed_03_model_eval_and_inference.ipynb \
             --ExecutePreprocessor.timeout=600
 
       - name: Upload executed notebook
@@ -58,4 +58,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: executed-notebook-03
-          path: notebooks/afternoon/executed_03_live_inference_pretrained_unet.ipynb
+          path: notebooks/afternoon/executed_03_model_eval_and_inference.ipynb
