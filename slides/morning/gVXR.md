@@ -69,6 +69,27 @@ contents...
 ^1^ Scattering may be added in the future
 :::
 
+# What do people do with gVXR?
+
+::::: columns
+::: column
+Used in a wide range of applications, including:
+
+- real-time medical simulators,
+- proposing new imaging methods,
+- prototype algorithms,
+- studying noise removal techniques,
+- teaching particle physics and x-ray imaging (250 students / year),
+- predicting image quality and artifacts,
+- optimise scans, and 
+- a lot of ML/AI nowadays
+:::
+
+::: column
+![Example of applications.](img/applications.png){width=100%}
+:::
+:::::
+
 # Implementation
 
 - R&D started in the early 2000s, VXI^1^ by Nicolas Freud (INSA-Lyon),
@@ -711,6 +732,62 @@ Or visit <https://webct.io/>
 ::::::
 :::::::
 
-# End of Section
+# End of Section on
+## "Introduction to X-ray attenuation and its implementation in gVXR"
 
+# Jupyter Notebook 1: Test installation
+- [test_installation.ipynb](../../notebooks/morning/test_installation.ipynb)
+- Run the quick test script provided with gVirtualXray's Python package to make sure the installation is working well on your system.
+- [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/TomographicImaging/gVXR-training-dXCT2026/blob/main/notebooks/morning/test_installation.ipynb)
 
+# Jupyter Notebook 2: First X-ray simulation
+- [first_xray_simulation.ipynb](../../notebooks/morning/first_xray_simulation.ipynb)
+- Explore the step-by-step notebook to create our first X-ray radiograph.
+- A mono-material object is imaged with a monochromatic source and an ideal detector. 
+- We show how to visualise the X-ray radiograph and take a screenshot of the 3D visualisation of the simulation environment.
+- [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/TomographicImaging/gVXR-training-dXCT2026/blob/main/notebooks/morning/first_xray_simulation.ipynb)
+
+# Jupyter Notebook 3: Numpy integration
+- [numpy_integration.ipynb](../../notebooks/morning/numpy_integration.ipynb)
+- Experiment with the Numpy integration to speed up the simulation.
+- [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/TomographicImaging/gVXR-training-dXCT2026/blob/main/notebooks/morning/numpy_integration.ipynb)
+
+# Jupyter Notebook 4: 3D visualisation
+- [visualisation.ipynb](../../notebooks/morning/visualisation.ipynb)
+-  Get familiar with the three different 3D visualisation methods provided with gVXR, including:
+  1. K3D to interactively visualise the 3D scene in a Jupyter widget, 
+  2. a customisable static 3D visualisation, and 
+  3. an interactive 3D visualisation window.
+- In this notebook you will also create a multi-material sample. 
+- [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/TomographicImaging/gVXR-training-dXCT2026/blob/main/notebooks/morning/visualisation.ipynb)
+
+# Jupyter Notebook 5: Polychromtic X-ray tube spectra
+- [polychromatism.ipynb](../../notebooks/morning/polychromatism.ipynb)
+- In this notebook we explore how to specify polychromtic X-ray tube spectra, without and with filtration. 
+- We also shows how to plot the spectrum. 
+- [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/TomographicImaging/gVXR-training-dXCT2026/blob/main/notebooks/morning/polychromatism.ipynb)
+ 
+# Jupyter Notebook 6: Scintillation
+- [scintillation.ipynb](../../notebooks/morning/scintillation.ipynb) 
+- In this notebook we explore how to create a detector with a scintillator.
+- We also shows how to plot the corresponding energy response. 
+- [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/TomographicImaging/gVXR-training-dXCT2026/blob/main/notebooks/morning/scintillation.ipynb)
+
+# Jupyter Notebook 7: Segmentation to simulation
+- [segmentation-to-CT_scan-simulation](../../notebooks/morning/segmentation-to-CT_scan-simulation.ipynb) 
+- Create a CT reconstruction from data simulated using a segmented image to model the sample.
+- [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/TomographicImaging/gVXR-training-dXCT2026/blob/main/notebooks/morning/segmentation-to-CT_scan-simulation.ipynb)
+ 
+# Python script: Simulation to ML 
+- [simulated_data_generation.py](scripts/morning/simulated_data_generation.py)
+- This script is very similar to the previous notebook. It makes use of the "XT H 225" twin. 
+- It will, however, run loops over:
+  - 6 samples
+  - SOD: 150 mm +/- 20%
+  - Current: 160 uA +/- 30%
+  - Exposures: [0.5, 1.0, 1.42, 2.0] seconds, and 
+  - Voltages in the range [180, 225].
+- In total, 3600 CT slices and corresponding labels will be generated.
+
+# End of Section on
+## "X-ray CT simulation in Python with gVXR"
