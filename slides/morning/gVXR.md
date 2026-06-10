@@ -348,7 +348,7 @@ contents...
 # 4. Beer-Lambert law (monochromatic)
 
 $$
-pixel(x,y)  = 
+I_{mono}(x,y)  = 
   E \times \mathbf{D}(E) \; \exp\left({-\sum_i \mu_i
 (E) \; \mathbf{d}_{i}(x,y)}\right)
 $$
@@ -363,41 +363,68 @@ $$
 # 4. Beer-Lambert law (polychromatic)
 
 $$
-pixel(x,y)  = 
+I_{poly}(x,y)  = 
   \sum_j E_j \times \mathbf{D}(E_j) \; \exp\left({-\sum_i \mu_i
 (E_j) \; \mathbf{d}_{i}(x,y)}\right)
 $$
 
-- Polychromatism ($\sum_j$): Images are integrated over $J$ energy bins.
+- **Polychromatism ($\sum_j$):** Images are integrated over $J$ energy bins.
 
 # 4. Beer-Lambert law (polychromatic + focal spot)
 
 $$
-pixel(x,y)  = 
+I_{FS}(x,y)  = 
   \sum_k \sum_j E_j \times \mathbf{D}(E_j) \; \exp\left({-\sum_i \mu_i
 (E_j) \; \mathbf{d}_{i,k}(x,y)}\right)
 $$
 
-- **Polychromatism $\left(\sum_j\right)$:** Images are integrated over $J$ energy bins.
 - **Focal spot $\left(\sum_k\right)$:** Images are integrated over $K$ point sources.
 
-# 4. Final model
+# 4. Beer-Lambert law (polychromatic + focal spot + scintillation)
 
 $$
-pixel(x,y)  = \mathrm{Gauss}(\theta, \sigma) + gain \times 
+I(x,y)  = 
+  \sum_k \sum_j \mathrm{R}(E_j) \times \mathbf{D}(E_j) \; \exp\left({-\sum_i \mu_i
+(E_j) \; \mathbf{d}_{i,k}(x,y)}\right)
+$$
+
+- **Scintillator $\left(\mathbf{R}(E_j)\right)$:** energy response of the detector, a lookup
+  table.
+
+# 4. Beer-Lambert law (polychromatic + focal spot + scintillation + PSF + electronic noise & photonic noise)
+
+$$
+I_{noisy}(x,y)  = \mathrm{Gauss}(\theta, \sigma) + gain \times 
   \left(PSF * \sum_k \sum_j \mathbf{R}(E_j) \times \mathrm{Poisson}\left(\mathbf{D}(E_j) \; \exp\left({-\sum_i \mu_i
 (E_j) \; \mathbf{d}_{i,k}(x,y)}\right)\right)\right)
 $$
 
 - **Electronic noise $\left(\mathrm{Gauss}(\theta, \sigma)\right)$:** additive Gaussian noise of average $\theta$ 
-  and standard corresponding to the dark field image 
-  deviation $\sigma$
+  and standard deviation $\sigma$ corresponding to the dark field image
 - **Detector gain $\left(gain\right)$:** a multiplicative factor
 - **Detector blur $\left(PSF\right)$:** 2D impulse response of the detector, a low-pass convolution
   filter;
-- **Scintillator $\left(\mathbf{R}(E_j)\right)$:** energy response of the detector, a lookup
-  table.
+- $*$: spatial convolution operator;
 - **Photonic noise $\left(\mathrm{Poisson}\right)$:** Poisson noise that depends on the number of photons.
+
+# 4. Final approximated model
+
+- **Models of Poisson noise: computationally slow**;
+- Complexity for previous slide: $\mathcal{O}(n^3)$: one call of $\mathrm{Poisson}()$ for every pixel for every energy bin for every focal spot source point 
+- Approximation: $\mathcal{O}(n)$: one call for every pixel only.
+
+$$
+    e2p = \frac{\sum_j \mathbf{D}(E_j)}{\sum_j \mathbf{R}(E_j) \, \mathbf{D}(E_j)} = \frac{1}{p2e}
+$$
+
+- **Scaling factor ($e2p$):** convert an integrated energy ($I$) in into an approximated number of photons;
+- **Scaling factor ($p2e$):** convert an approximated number of photons in an integrated energy.
+
+$$
+I_{final}(x,y)  = \mathrm{Gauss}(\theta, \sigma) + gain \times 
+  \left(PSF * \left(p2e \times \mathrm{Poisson}\left(I(x,y)\times e2p\right)\right)\right)
+$$
+
 
 # 5. Is gVXR validated? ^1^
 
@@ -650,12 +677,17 @@ from cil.recon import FDK
 from cil.io import TIFFWriter
 
 reader = JSON2gVXRDataReader(file_name="filename.json")
+
 data_absorption = TransmissionAbsorptionConverter(
     white_level=data_original.max())(data_original)
+    
 acquisition_data = AcquisitionData(data_absorption,
     geometry=data_absorption.geometry)
+    
 acquisition_data.reorder(order="tigre")
+
 ig = acquisition_data.geometry.get_ImageGeometry()
+
 fdk =  FDK(acquisition_data, ig)
 recon = fdk.run()
 TIFFWriter(data=recon, file_name="slices", "out")).write()
@@ -665,25 +697,20 @@ TIFFWriter(data=recon, file_name="slices", "out")).write()
 
 :::::: columns
 ::: column
-0.6 ![image](webct){height="80%" width="\\textwidth"}
+![Screenshot of WebCT](img/webct.png){width=90%}
 :::
 
 :::: column
-0.4
+See video on YouTube ![QR code](img/WebCTYouTube.png){width=60%}
 
-::: block
-Remarks See video on YouTube\
-![image](WebCTYouTube){width="2.cm"}\
-Download the new pre-release\
-![image](WebCTdownload){width="2.cm"}\
+Download the latest release ![QR code](img/WebCTdownload.png){width=60%}
+
 Or visit <https://webct.io/>
 :::
 ::::
 ::::::
 :::::::
 
+# End of Section
 
 
-
-
-# End of Chapter on Point operators
