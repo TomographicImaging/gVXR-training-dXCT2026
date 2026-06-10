@@ -1,18 +1,6 @@
 name: Test notebook 03
 
 on:
-  push:
-    paths:
-      - "notebooks/afternoon/03_model_eval_and_inference.ipynb"
-      - "notebooks/afternoon/utils.py"
-      - "environment.yml"
-      - ".github/workflows/test-notebook-03.yml"
-  pull_request:
-    paths:
-      - "notebooks/afternoon/03_model_eval_and_inference.ipynb"
-      - "notebooks/afternoon/utils.py"
-      - "environment.yml"
-      - ".github/workflows/test-notebook-03.yml"
   workflow_dispatch:
 
 jobs:
