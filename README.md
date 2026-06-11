@@ -69,13 +69,6 @@ conda activate gvxr-dXCT2026
 - [Numpy integration](notebooks/morning/numpy_integration.ipynb): Experiment with the Numpy integration to speed up 
   the simulation. 
   [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/TomographicImaging/gVXR-training-dXCT2026/blob/main/notebooks/morning/numpy_integration.ipynb)
-- [3D visualisation](notebooks/morning/visualisation.ipynb): 
-  Get familiar with the three different 3D visualisation methods provided with gVXR, 
-  1. K3D to interactively visualise the 3D scene in a Jupyter widget, 
-  2. a customisable static 3D visualisation, and 
-  3. an interactive 3D visualisation window. <br/>
-  In this notebook you will also create a multi-material sample. 
-  [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/TomographicImaging/gVXR-training-dXCT2026/blob/main/notebooks/morning/visualisation.ipynb)
 - [Polychromtic X-ray tube spectra](notebooks/morning/polychromatism.ipynb):
   In this notebook we explore how to specify polychromtic X-ray tube spectra, without and with filtration. 
   We also shows how to plot the spectrum. 
@@ -84,6 +77,13 @@ conda activate gvxr-dXCT2026
   In this notebook we explore how to create a detector with a scintillator.
   We also shows how to plot the corresponding energy response. 
   [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/TomographicImaging/gVXR-training-dXCT2026/blob/main/notebooks/morning/scintillation.ipynb)
+- [3D visualisation](notebooks/morning/visualisation.ipynb): 
+  Get familiar with the three different 3D visualisation methods provided with gVXR, 
+  1. K3D to interactively visualise the 3D scene in a Jupyter widget, 
+  2. a customisable static 3D visualisation, and 
+  3. an interactive 3D visualisation window. <br/>
+  In this notebook you will also create a multi-material sample. 
+  [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/TomographicImaging/gVXR-training-dXCT2026/blob/main/notebooks/morning/visualisation.ipynb)
 - [Segmentation to simulation](notebooks/morning/segmentation-to-CT_scan-simulation.ipynb): 
 Create a CT reconstruction from data simulated using a segmented image to model the sample.
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/TomographicImaging/gVXR-training-dXCT2026/blob/main/notebooks/morning/segmentation-to-CT_scan-simulation.ipynb)

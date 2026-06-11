@@ -29,12 +29,15 @@ lang: en-gb
 
 # Contents
 
-1. What is gVXR?
+1. What is gVXR and what do people do with it?
 2. What can we scan?
-3. What are the main built-in functionalities?
-4. Implementation of the attenuation law in gVXR
+3. Beer/Lambert law (also known as attenuation law) 
+4. What are the main built-in functionalities?
 5. Is gVXR validated?
+5. How to simulate a CT acquisition?
 6. How to use gVXR?
+7. Other ways to use gVXR
+
 
 <!--
 :::::::::::::: {.columns}
@@ -147,6 +150,20 @@ Used in a wide range of applications, including:
 :::
 :::::
 
+# Easy installation for ![Python](img/python-logo-generic.svg){height=60px}
+
+- Available on ![PyPi](img/PyPI_logo.svg){height=90px}: [https://pypi.org/project/gvxr/](https://pypi.org/project/gvxr/)
+- For MS Windows (x86_64 architecture only);
+- GNU/Linux (x86_64 and aarch64 architectures)
+
+``` {numbers="none"}
+pip install gvxr
+```
+# Jupyter Notebook 1: Test installation
+- [test_installation.ipynb](../../notebooks/morning/test_installation.ipynb)
+- Run the quick test script provided with gVirtualXray's Python package to make sure the installation is working well on your system.
+- [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/TomographicImaging/gVXR-training-dXCT2026/blob/main/notebooks/morning/test_installation.ipynb)
+
 # 2. What can we scan?
 
 - Surface mesh from files (all common formats are supported, inc. STL)
@@ -199,26 +216,114 @@ Used in a wide range of applications, including:
  |                          | Fully customisable | Fully customisable | Cuboids, spheres, cylinders, | To appear |
  |                          |  |  | inc. boolean operations                     |  |
 
-# 3. Built-in functionalities
+# 3. Beer-Lambert law (monochromatic)
+
+$$
+I_{mono}(x,y)  = 
+  E \times \mathbf{D}(E) \; \exp\left({-\sum_i \mu_i
+(E) \; \mathbf{d}_{i}(x,y)}\right)
+$$
+
+- $E$ is the Energy $E$ emitted by the source
+- $\mathbf{D}(E)$ is the number of photons of Energy $E$ emitted by the source
+- $\mu_i(E)$ is the linear attenuation coefficient at Energy $E$ of the
+  $i$-th material;
+- $\mathbf{d}_i(x, y)$ is the path length of the ray from the X-ray source to
+  pixel $(x,y)$ crossing the $i$-th material.
+
+# Jupyter Notebook 2: First X-ray simulation
+- [first_xray_simulation.ipynb](../../notebooks/morning/first_xray_simulation.ipynb)
+- Explore the step-by-step notebook to create our first X-ray radiograph.
+- A mono-material object is imaged with a monochromatic source and an ideal detector. 
+- We show how to visualise the X-ray radiograph and take a screenshot of the 3D visualisation of the simulation environment.
+- [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/TomographicImaging/gVXR-training-dXCT2026/blob/main/notebooks/morning/first_xray_simulation.ipynb)
+
+# Jupyter Notebook 3: Numpy integration
+- [numpy_integration.ipynb](../../notebooks/morning/numpy_integration.ipynb)
+- Experiment with the Numpy integration to speed up the simulation.
+- [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/TomographicImaging/gVXR-training-dXCT2026/blob/main/notebooks/morning/numpy_integration.ipynb)
+
+# 4. Built-in functionalities
 
 ::::: columns
 ::: column
-- Impulse response of detectors;
+1. **Flexible material composition**;
 :::
 
 ::: column
-![LSF](img/LSF.png){ width=20% }
+![Chemical elements](img/material_element.png){ width=80% }
 
-![Image comparision (with/without blur)](img/LSF-comparison.png){ width=50% }
+![Compounds](img/material_compound.png){ width=80% }
+
+![Mixtures](img/material_mixture.png){ width=80% }
 :::
 :::::
 
-# 3. Built-in functionalities
+::: footer
+^1^ Text in **bold characters** marks components validated against Monte Carlo simulations}
+:::
+
+# 4. Built-in functionalities
 
 ::::: columns
 ::: column
-- Impulse response of detectors;
-- **Parallel beams**, **point sources**, & **focal spots**^1^;
+1. **Flexible material composition**;
+2. **Monochromatic** & **polychromatic** spectra:
+:::
+
+::: column
+![Spectrum comparision](img/spectra.png){ width=80% }
+:::
+:::::
+
+::: footer
+^1^ Text in **bold characters** marks components validated against Monte Carlo simulations}
+:::
+
+# 4.2) Beer-Lambert law (polychromatic)
+
+$$
+I_{poly}(x,y)  = 
+  \sum_j E_j \times \mathbf{D}(E_j) \; \exp\left({-\sum_i \mu_i
+(E_j) \; \mathbf{d}_{i}(x,y)}\right)
+$$
+
+- **Polychromatism ($\sum_j$):** Images are integrated over $J$ energy bins.
+
+# 4. Built-in functionalities
+
+::::: columns
+::: column
+1. **Flexible material composition**;
+2. **Monochromatic** & **polychromatic** spectra:
+  - including kV and beam filtration;
+:::
+
+::: column
+![Image comparision (with/without filtration)](img/images-polychromatism.png){ width=100% }
+
+![Profile comparision (with/without filtration)](img/profiles-polychromatism.png){ width=80% }
+:::
+:::::
+
+::: footer
+^1^ Text in **bold characters** marks components validated against Monte Carlo simulations}
+:::
+
+# Jupyter Notebook 4: Polychromtic X-ray tube spectra
+- [polychromatism.ipynb](../../notebooks/morning/polychromatism.ipynb)
+- In this notebook we explore how to specify polychromtic X-ray tube spectra, without and with filtration. 
+- We also shows how to plot the spectrum. 
+- [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/TomographicImaging/gVXR-training-dXCT2026/blob/main/notebooks/morning/polychromatism.ipynb)
+
+# 4. Built-in functionalities
+
+::::: columns
+::: column
+1. **Flexible material composition**;
+2. **Monochromatic** & **polychromatic** spectra:
+  - including kV and beam filtration;
+3. **Parallel beams**, **point sources**, & **focal spots**^1^;
 :::
 
 ::: column
@@ -238,75 +343,25 @@ Used in a wide range of applications, including:
 ^1^ Text in **bold characters** marks components validated against Monte Carlo simulations}
 :::
 
-# 3. Built-in functionalities
+# 4.3) Beer-Lambert law (polychromatic + focal spot)
+
+$$
+I_{FS}(x,y)  = 
+  \sum_k \sum_j E_j \times \mathbf{D}(E_j) \; \exp\left({-\sum_i \mu_i
+(E_j) \; \mathbf{d}_{i,k}(x,y)}\right)
+$$
+
+- **Focal spot $\left(\sum_k\right)$:** Images are integrated over $K$ point sources.
+
+# 4. Built-in functionalities
 
 ::::: columns
 ::: column
-- Impulse response of detectors;
-- **Parallel beams**, **point sources**, & **focal spots**^1^;
-- **Monochromatic** & **polychromatic** spectra;
-:::
-
-::: column
-![Spectrum comparision](img/spectra.png){ width=80% }
-:::
-:::::
-
-::: footer
-^1^ Text in **bold characters** marks components validated against Monte Carlo simulations}
-:::
-
-# 3. Built-in functionalities
-
-::::: columns
-::: column
-- Impulse response of detectors;
-- **Parallel beams**, **point sources**, & **focal spots**^1^;
-- **Monochromatic** & **polychromatic** spectra;
+1. **Flexible material composition**;
+2. **Monochromatic** & **polychromatic** spectra:
   - including kV and beam filtration;
-:::
-
-::: column
-![Image comparision (with/without filtration)](img/images-polychromatism.png){ width=100% }
-
-![Profile comparision (with/without filtration)](img/profiles-polychromatism.png){ width=80% }
-:::
-:::::
-
-::: footer
-^1^ Text in **bold characters** marks components validated against Monte Carlo simulations}
-:::
-
-# 3. Built-in functionalities
-
-::::: columns
-::: column
-- Impulse response of detectors;
-- **Parallel beams**, **point sources**, & **focal spots**^1^;
-- **Monochromatic** & **polychromatic** spectra;
-  - including kV and beam filtration;
-- **Photon noise** (calibrated on Geant4/Gate);
-:::
-
-::: column
-![Poisson noise comparison (gVXR vs. Geant4)](img/compare-6000000photons.png){ width=100% }
-:::
-:::::
-
-::: footer
-^1^ Text in **bold characters** marks components validated against Monte Carlo simulations}
-:::
-
-# 3. Built-in functionalities
-
-::::: columns
-::: column
-- Impulse response of detectors;
-- **Parallel beams**, **point sources**, & **focal spots**^1^;
-- **Monochromatic** & **polychromatic** spectra;
-  - including kV and beam filtration;
-- **Photon noise** (calibrated on Geant4/Gate);
-- **Scintillation**;
+3. **Parallel beams**, **point sources**, & **focal spots**^1^;
+4. **Scintillation**;
 :::
 
 ::: column
@@ -318,91 +373,7 @@ Used in a wide range of applications, including:
 ^1^ Text in **bold characters** marks components validated against Monte Carlo simulations}
 :::
 
-# 3. Built-in functionalities
-
-::::: columns
-::: column
-- Impulse response of detectors;
-- **Parallel beams**, **point sources**, & **focal spots**^1^;
-- **Monochromatic** & **polychromatic** spectra;
-  - including kV and beam filtration;
-- **Photon noise** (calibrated on Geant4/Gate);
-- **Scintillation**;
-- **Flexible material composition**;
-:::
-
-::: column
-![Chemical elements](img/material_element.png){ width=80% }
-
-![Compounds](img/material_compound.png){ width=80% }
-
-![Mixtures](img/material_mixture.png){ width=80% }
-:::
-:::::
-
-::: footer
-^1^ Text in **bold characters** marks components validated against Monte Carlo simulations}
-:::
-
-# 3. Built-in functionalities
-
-::::: columns
-::: column
-- Impulse response of detectors;
-- **Parallel beams**, **point sources**, & **focal spots**^1^;
-- **Monochromatic** & **polychromatic** spectra;
-  - including kV and beam filtration;
-- **Photon noise** (calibrated on Geant4/Gate);
-- **Scintillation**;
-- **Flexible material composition**;
-- Interactive 3D visualization
-:::
-
-::: column
-![3D visualisation](img/visualisation.mp4){ width=50% }
-:::
-:::::
-
-::: footer
-^1^ Text in **bold characters** marks components validated against Monte Carlo simulations}
-:::
-
-# 4. Beer-Lambert law (monochromatic)
-
-$$
-I_{mono}(x,y)  = 
-  E \times \mathbf{D}(E) \; \exp\left({-\sum_i \mu_i
-(E) \; \mathbf{d}_{i}(x,y)}\right)
-$$
-
-- $E$ is the Energy $E$ emitted by the source
-- $\mathbf{D}(E)$ is the number of photons of Energy $E$ emitted by the source
-- $\mu_i(E)$ is the linear attenuation coefficient at Energy $E$ of the
-  $i$-th material;
-- $\mathbf{d}_i(x, y)$ is the path length of the ray from the X-ray source to
-  pixel $(x,y)$ crossing the $i$-th material.
-
-# 4. Beer-Lambert law (polychromatic)
-
-$$
-I_{poly}(x,y)  = 
-  \sum_j E_j \times \mathbf{D}(E_j) \; \exp\left({-\sum_i \mu_i
-(E_j) \; \mathbf{d}_{i}(x,y)}\right)
-$$
-
-- **Polychromatism ($\sum_j$):** Images are integrated over $J$ energy bins.
-
-# 4. Beer-Lambert law (polychromatic + focal spot)
-
-$$
-I_{FS}(x,y)  = 
-  \sum_k \sum_j E_j \times \mathbf{D}(E_j) \; \exp\left({-\sum_i \mu_i
-(E_j) \; \mathbf{d}_{i,k}(x,y)}\right)
-$$
-
-- **Focal spot $\left(\sum_k\right)$:** Images are integrated over $K$ point sources.
-
-# 4. Beer-Lambert law (polychromatic + focal spot + scintillation)
+# 4.4) Beer-Lambert law (polychromatic + focal spot + scintillation)
 
 $$
 I(x,y)  = 
@@ -413,7 +384,68 @@ $$
 - **Scintillator $\left(\mathbf{R}(E_j)\right)$:** energy response of the detector, a lookup
   table.
 
-# 4. Beer-Lambert law (polychromatic + focal spot + scintillation + PSF + electronic noise & photonic noise)
+# Jupyter Notebook 5: Scintillation
+- [scintillation.ipynb](../../notebooks/morning/scintillation.ipynb) 
+- In this notebook we explore how to create a detector with a scintillator.
+- We also shows how to plot the corresponding energy response. 
+- [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/TomographicImaging/gVXR-training-dXCT2026/blob/main/notebooks/morning/scintillation.ipynb)
+
+# 4. Built-in functionalities
+
+::::: columns
+::: column
+1.  **Flexible material composition**;
+2. **Monochromatic** & **polychromatic** spectra:
+  - including kV and beam filtration;
+3. **Parallel beams**, **point sources**, & **focal spots**^1^;
+4. **Scintillation**;
+5. Impulse response of detectors;
+:::
+
+::: column
+![LSF](img/LSF.png){ width=20% }
+
+![Image comparision (with/without blur)](img/LSF-comparison.png){ width=50% }
+:::
+:::::
+
+
+# 4.5) Beer-Lambert law (polychromatic + focal spot + scintillation + PSF)
+
+$$
+I_{PSF}(x,y)  = PSF * \sum_k \sum_j \mathbf{R}(E_j) \times \mathbf{D}(E_j) \; \exp\left({-\sum_i \mu_i
+(E_j) \; \mathbf{d}_{i,k}(x,y)}\right)
+$$
+
+- **Detector blur $\left(PSF\right)$:** 2D impulse response of the detector, a low-pass convolution
+  filter;
+- $*$: spatial convolution operator.
+
+ 
+# 4. Built-in functionalities
+
+::::: columns
+::: column
+1. **Flexible material composition**;
+2. **Monochromatic** & **polychromatic** spectra:
+  - including kV and beam filtration;
+3. **Parallel beams**, **point sources**, & **focal spots**^1^;
+4. **Scintillation**;
+5. Noise (electronic & **photonic**).
+:::
+
+::: column
+![Poisson noise comparison (gVXR vs. Geant4)](img/compare-6000000photons.png){ width=100% }
+:::
+:::::
+
+::: footer
+^1^ Text in **bold characters** marks components validated against Monte Carlo simulations}
+:::
+
+
+
+# 4.5) Beer-Lambert law (polychromatic + focal spot + scintillation + PSF + electronic noise & photonic noise)
 
 $$
 I_{noisy}(x,y)  = \mathrm{Gauss}(\theta, \sigma) + gain \times 
@@ -424,12 +456,9 @@ $$
 - **Electronic noise $\left(\mathrm{Gauss}(\theta, \sigma)\right)$:** additive Gaussian noise of average $\theta$ 
   and standard deviation $\sigma$ corresponding to the dark field image
 - **Detector gain $\left(gain\right)$:** a multiplicative factor
-- **Detector blur $\left(PSF\right)$:** 2D impulse response of the detector, a low-pass convolution
-  filter;
-- $*$: spatial convolution operator;
 - **Photonic noise $\left(\mathrm{Poisson}\right)$:** Poisson noise that depends on the number of photons.
 
-# 4. Final approximated model
+# 4.5) Final approximated model
 
 - **Models of Poisson noise: computationally slow**;
 - Complexity for previous slide: $\mathcal{O}(n^3)$: 
@@ -450,6 +479,38 @@ $$
 I_{final}(x,y)  = \mathrm{Gauss}(\theta, \sigma) + gain \times 
   \left(PSF * \left(p2e \times \mathrm{Poisson}\left(I(x,y)\times e2p\right)\right)\right)
 $$
+
+# 4. Built-in functionalities
+
+::::: columns
+::: column
+1. **Flexible material composition**;
+2. **Monochromatic** & **polychromatic** spectra:
+  - including kV and beam filtration;
+3. **Parallel beams**, **point sources**, & **focal spots**^1^;
+4. **Scintillation**;
+5. Impulse response of detectors;
+6. Interactive 3D visualization
+:::
+
+::: column
+![3D visualisation](img/visualisation.mp4){ width=50% }
+:::
+:::::
+
+::: footer
+^1^ Text in **bold characters** marks components validated against Monte Carlo simulations}
+:::
+
+
+# Jupyter Notebook 6: 3D visualisation
+- [visualisation.ipynb](../../notebooks/morning/visualisation.ipynb)
+-  Get familiar with the three different 3D visualisation methods provided with gVXR, including:
+  1. K3D to interactively visualise the 3D scene in a Jupyter widget, 
+  2. a customisable static 3D visualisation, and 
+  3. an interactive 3D visualisation window.
+- In this notebook you will also create a multi-material sample. 
+- [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/TomographicImaging/gVXR-training-dXCT2026/blob/main/notebooks/morning/visualisation.ipynb)
 
 
 # 5. Is gVXR validated? ^1^
@@ -578,7 +639,44 @@ be found!
    1,000,000,000 &times; 11        01:41:07                 31                 194,208
   ---------------------------------- --------------------- -------------------- ---------------------
 
-# 6. How to use gVXR?
+# 6. CT simulation
+
+```c++
+void computeCTAcquisition(const std::string &  	aProjectionOutputPath,
+		const std::string &  	aScreenshotOutputPath,
+		unsigned int  	aNumberOfProjections,
+		float  	aFirstAngle,
+		bool  	anIncludeLastAngleFlag,
+		float  	aLastAngle,
+		unsigned int  	aNumberOfWhiteImagesInFlatField,
+		float  	aPositionOfCentreOfRotationX,
+		float  	aPositionOfCentreOfRotationY,
+		float  	aPositionOfCentreOfRotationZ,
+		const std::string &  	aUnitOfLength,
+		float  	aAxisOfRotationX,
+		float  	aAxisOfRotationY,
+		float  	aAxisOfRotationZ,
+		bool  	anIntegrateEnergyFlag = true,
+		unsigned int  	aVerboseLevel = 0 
+	)
+```
+# Jupyter Notebook 7: Segmentation to simulation
+- [segmentation-to-CT_scan-simulation](../../notebooks/morning/segmentation-to-CT_scan-simulation.ipynb) 
+- Create a CT reconstruction from data simulated using a segmented image to model the sample.
+- [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/TomographicImaging/gVXR-training-dXCT2026/blob/main/notebooks/morning/segmentation-to-CT_scan-simulation.ipynb)
+ 
+# Python script: Simulation to ML 
+- [simulated_data_generation.py](scripts/morning/simulated_data_generation.py)
+- This script is very similar to the previous notebook. It makes use of the "XT H 225" twin. 
+- It will, however, run loops over:
+  - 6 samples
+  - SOD: 150 mm +/- 20%
+  - Current: 160 uA +/- 30%
+  - Exposures: [0.5, 1.0, 1.42, 2.0] seconds, and 
+  - Voltages in the range [180, 225].
+- In total, 3600 CT slices and corresponding labels will be generated.
+
+# 7. Other ways to use gVXR
 
 - Write the code to describe the previous parameters in pure
   ![Python](img/python-logo-generic.svg){height=30px},
@@ -591,16 +689,6 @@ be found!
   ![GNU Octave](img/gnu-octave-logo-lnx.png){ height=30px }.
 - Or use a more human friendly ![JSON](img/json_logo_icon_168490.svg){ height=30px } file.
 - To simplify the ![Python](img/python-logo-generic.svg){height=30px} code.
-
-# Easy installation for ![Python](img/python-logo-generic.svg){height=60px}
-
-- Available on ![PyPi](img/PyPI_logo.svg){height=90px}: [https://pypi.org/project/gvxr/](https://pypi.org/project/gvxr/)
-- For MS Windows (x86_64 architecture only);
-- GNU/Linux (x86_64 and aarch64 architectures)
-
-``` {numbers="none"}
-pip install gvxr
-```
 
 # JSON file (visualisation window)
 
@@ -738,60 +826,3 @@ Or visit <https://webct.io/>
 
 # End of Section on
 ## "Introduction to X-ray attenuation and its implementation in gVXR"
-
-# Jupyter Notebook 1: Test installation
-- [test_installation.ipynb](../../notebooks/morning/test_installation.ipynb)
-- Run the quick test script provided with gVirtualXray's Python package to make sure the installation is working well on your system.
-- [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/TomographicImaging/gVXR-training-dXCT2026/blob/main/notebooks/morning/test_installation.ipynb)
-
-# Jupyter Notebook 2: First X-ray simulation
-- [first_xray_simulation.ipynb](../../notebooks/morning/first_xray_simulation.ipynb)
-- Explore the step-by-step notebook to create our first X-ray radiograph.
-- A mono-material object is imaged with a monochromatic source and an ideal detector. 
-- We show how to visualise the X-ray radiograph and take a screenshot of the 3D visualisation of the simulation environment.
-- [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/TomographicImaging/gVXR-training-dXCT2026/blob/main/notebooks/morning/first_xray_simulation.ipynb)
-
-# Jupyter Notebook 3: Numpy integration
-- [numpy_integration.ipynb](../../notebooks/morning/numpy_integration.ipynb)
-- Experiment with the Numpy integration to speed up the simulation.
-- [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/TomographicImaging/gVXR-training-dXCT2026/blob/main/notebooks/morning/numpy_integration.ipynb)
-
-# Jupyter Notebook 4: 3D visualisation
-- [visualisation.ipynb](../../notebooks/morning/visualisation.ipynb)
--  Get familiar with the three different 3D visualisation methods provided with gVXR, including:
-  1. K3D to interactively visualise the 3D scene in a Jupyter widget, 
-  2. a customisable static 3D visualisation, and 
-  3. an interactive 3D visualisation window.
-- In this notebook you will also create a multi-material sample. 
-- [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/TomographicImaging/gVXR-training-dXCT2026/blob/main/notebooks/morning/visualisation.ipynb)
-
-# Jupyter Notebook 5: Polychromtic X-ray tube spectra
-- [polychromatism.ipynb](../../notebooks/morning/polychromatism.ipynb)
-- In this notebook we explore how to specify polychromtic X-ray tube spectra, without and with filtration. 
-- We also shows how to plot the spectrum. 
-- [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/TomographicImaging/gVXR-training-dXCT2026/blob/main/notebooks/morning/polychromatism.ipynb)
- 
-# Jupyter Notebook 6: Scintillation
-- [scintillation.ipynb](../../notebooks/morning/scintillation.ipynb) 
-- In this notebook we explore how to create a detector with a scintillator.
-- We also shows how to plot the corresponding energy response. 
-- [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/TomographicImaging/gVXR-training-dXCT2026/blob/main/notebooks/morning/scintillation.ipynb)
-
-# Jupyter Notebook 7: Segmentation to simulation
-- [segmentation-to-CT_scan-simulation](../../notebooks/morning/segmentation-to-CT_scan-simulation.ipynb) 
-- Create a CT reconstruction from data simulated using a segmented image to model the sample.
-- [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/TomographicImaging/gVXR-training-dXCT2026/blob/main/notebooks/morning/segmentation-to-CT_scan-simulation.ipynb)
- 
-# Python script: Simulation to ML 
-- [simulated_data_generation.py](scripts/morning/simulated_data_generation.py)
-- This script is very similar to the previous notebook. It makes use of the "XT H 225" twin. 
-- It will, however, run loops over:
-  - 6 samples
-  - SOD: 150 mm +/- 20%
-  - Current: 160 uA +/- 30%
-  - Exposures: [0.5, 1.0, 1.42, 2.0] seconds, and 
-  - Voltages in the range [180, 225].
-- In total, 3600 CT slices and corresponding labels will be generated.
-
-# End of Section on
-## "X-ray CT simulation in Python with gVXR"
