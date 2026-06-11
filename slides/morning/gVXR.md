@@ -4,10 +4,11 @@ author: Prof Franck P. Vidal
 subtitle: Workshop, dXCT 2026
 date: 2026-06-16
 keywords: gVXR, gVirtualXray, dXCT, X-ray simulation
-institute: 
+institute: Scientific Computing, Science and Technology Facilities Council
 fontsize: 11pt
 lang: en-gb
 ---
+
 
 # Real vs simulated?
 
@@ -223,11 +224,11 @@ Used in a wide range of applications, including:
 ::: column
 | Focal spot type | Size |
 |-----------------|------|
-| Point | 0.0 mm \|
-| Cube | $0.25 \times 0.25 \times 0.25$ mm |
-| Square | $0.25 \times 0.25$ mm |
-| Rectangle | $0.25 \times 0.5$ mm |
-| Rectangle rotated by 25&deg; | $0.25 \times 0.5$ mm |
+| Point | 0.0 mm |
+| Cube | 0.25 &times; 0.25 &times; 0.25 mm |
+| Square | 0.25 &times; 0.25 mm |
+| Rectangle | 0.25 &times; 0.5 mm |
+| Rectangle rotated by 25&deg; | 0.25 &times; 0.5 mm |
 
 ![Focal spot type comparision](img/focal_spot-profiles.png){ width=60% }
 :::
@@ -431,7 +432,11 @@ $$
 # 4. Final approximated model
 
 - **Models of Poisson noise: computationally slow**;
-- Complexity for previous slide: $\mathcal{O}(n^3)$: one call of $\mathrm{Poisson}()$ for every pixel for every energy bin for every focal spot source point 
+- Complexity for previous slide: $\mathcal{O}(n^3)$: 
+  - one call of $\mathrm{Poisson}()$
+  - for every pixel 
+    - for every energy bin 
+      - for every focal spot source point 
 - Approximation: $\mathcal{O}(n)$: one call for every pixel only.
 
 $$
@@ -455,8 +460,7 @@ $$
 :::
 
 ::: column
-**10 days with GATE vs. 1 second with gVirtualXray for $128 \times 128$
-pixels**
+**10 days with GATE vs. 1 second with gVirtualXray for 128 &times; 128 pixels**
 ![Image comparison (gVXR vs. Geant4)](img/full_comparison-paediatrics-crop.png){width="70%"}\
 ![Profile comparison (gVXR vs. Geant4)](img/profiles-paediatrics-crop.png){width="70%"}\
 MAPE: 3.12%, ZNCC: 99.96%, SSIM: 0.99
@@ -543,7 +547,7 @@ be found!
 ::::: columns
 ::: column
 -   Spectrum: polychromatic with 50 energy bins
--   Resolution: $\text{100} \times \text{100}$ pixels
+-   Resolution: 100 &times; 100 pixels
 -   Flat field images: 10
 -   Number of threads for the Monte Carlo simulation: 24
 -   CPU: AMD Ryzen 5900X
@@ -562,16 +566,16 @@ be found!
            **Photon count**           **Execution time**    **Execution time**   **Speed-up factor**
                                          **with Gate**        **with gVXR**     
                                       **\[in hh:mm:ss\]**     **\[in ms\]**     
-      $\text{100,000} \times 11$           00:01:47                 32                  3,378
-      $\text{275,000} \times 11$           00:01:47                 32                  3,307
-      $\text{775,000} \times 11$           00:01:48                 35                  3,090
-     $\text{2,150,000} \times 11$          00:01:51                 34                  3,273
-     $\text{6,000,000} \times 11$          00:01:57                 31                  3,812
-    $\text{16,000,000} \times 11$          00:02:22                 36                  3,958
-    $\text{46,000,000} \times 11$          00:05:24                 40                  8,059
-    $\text{130,000,000} \times 11$         00:13:24                 36                 22,433
-    $\text{360,000,000} \times 11$         00:36:34                 36                 60,783
-   $\text{1,000,000,000} \times 11$        01:41:07                 31                 194,208
+      100,000 &times; 11           00:01:47                 32                  3,378
+      275,000 &times; 11           00:01:47                 32                  3,307
+      775,000 &times; 11           00:01:48                 35                  3,090
+     2,150,000 &times; 11          00:01:51                 34                  3,273
+     6,000,000 &times; 11          00:01:57                 31                  3,812
+    16,000,000 &times; 11          00:02:22                 36                  3,958
+    46,000,000 &times; 11          00:05:24                 40                  8,059
+    130,000,000 &times; 11         00:13:24                 36                 22,433
+    360,000,000 &times; 11         00:36:34                 36                 60,783
+   1,000,000,000 &times; 11        01:41:07                 31                 194,208
   ---------------------------------- --------------------- -------------------- ---------------------
 
 # 6. How to use gVXR?
@@ -722,9 +726,9 @@ TIFFWriter(data=recon, file_name="slices", "out")).write()
 :::
 
 :::: column
-See video on YouTube ![QR code](img/WebCTYouTube.png){width=60%}
+See video on YouTube ![QR code](img/WebCTYouTube.png){width=50%}
 
-Download the latest release ![QR code](img/WebCTdownload.png){width=60%}
+Download the latest release ![QR code](img/WebCTdownload.png){width=50%}
 
 Or visit <https://webct.io/>
 :::
