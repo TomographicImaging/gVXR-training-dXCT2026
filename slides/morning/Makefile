@@ -14,7 +14,7 @@ all: ${DOCS}
 	#${PANDOC} -t  slidy -s $(<F) -o $(@F)
 	#${PANDOC} -t  slideous -s $(<F) -o $(@F)
 	#${PANDOC} -t  dzslides -s $< -o $@
-	cd $(<D) ; ${PANDOC} --mathjax -t  slidy --css=./custom.css -s $(<F) -o $(@F)
+	cd $(<D) ; ${PANDOC} --mathjax --template template.slidy -t  slidy --css=./custom.css -s $(<F) -o $(@F)
 
 %.pdf: %.html
 	# ${PANDOC} -t  beamer -s $< -o $@
