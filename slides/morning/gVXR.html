@@ -1,0 +1,1463 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-gb" xml:lang="en-gb">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <meta name="copyright"
+    content="Workshop, dXCT 2026; Introduction to X-ray attenuation and its implementation in gVXR (STFC, Franck Vidal)"
+     />
+  <meta name="author" content="Prof Franck P. Vidal" />
+  <meta name="date" content="2026-06-16" />
+  <meta name="keywords" content="gVXR, gVirtualXray, dXCT, X-ray
+simulation" />
+  <title>Introduction to X-ray attenuation and its implementation in gVXR</title>
+  <style type="text/css">
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" type="text/css" media="screen, projection, print"
+    href="https://www.w3.org/Talks/Tools/Slidy2/styles/slidy.css" />
+  <link rel="stylesheet" type="text/css" media="screen, projection, print"
+   href="./custom.css" />
+  <script defer=""
+  src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js"
+  type="text/javascript"></script>
+  <script src="https://www.w3.org/Talks/Tools/Slidy2/scripts/slidy.js"
+    charset="utf-8" type="text/javascript"></script>
+ </head>
+<body>
+<div class="slide titlepage">
+  <h1 class="title">Introduction to X-ray attenuation and its
+implementation in gVXR</h1>
+  <p class="subtitle">Workshop, dXCT 2026</p>
+  <p class="author">
+Prof Franck P. Vidal
+  </p>
+  <p class="institute">
+Scientific Computing, Science and Technology Facilities Council
+  </p>
+  <p class="date">2026-06-16</p>
+</div>
+<div id="real-vs-simulated" class="slide section level1">
+<h1>Real vs simulated?</h1>
+<p><img src="img/real-vs-simulated1.png" style="width:70.0%" /></p>
+</div>
+<div id="real-vs-simulated-1" class="slide section level1">
+<h1>Real vs simulated?</h1>
+<p><img src="img/real-vs-simulated2.png" style="width:70.0%" /></p>
+</div>
+<div id="aims-of-this-session" class="slide section level1">
+<h1>Aims of this session</h1>
+<ul>
+<li>Discover what gVXR is;</li>
+<li>Become familiar with the Beer-Lambert law to compute the attenuation
+of X-rays by matter;</li>
+<li>Describe how the Beer-Lambert law is implemented in
+gVirtualXray;<br />
+</li>
+<li>Learn how to generate realistic, XCT projection data using the <a
+href="https://gvirtualxray.sourceforge.io/"><strong>gVXR</strong>
+package</a>,
+<ul>
+<li>with a focus on building simulation setups that mirror practical XCT
+scenarios and</li>
+<li>producing synthetic datasets suitable for downstream analysis and
+model training.</li>
+</ul></li>
+</ul>
+</div>
+<div id="contents" class="slide section level1">
+<h1>Contents</h1>
+<ol style="list-style-type: decimal">
+<li>What is gVXR and what do people do with it?</li>
+<li>What can we scan?</li>
+<li>Beer/Lambert law (also known as attenuation law)</li>
+<li>What are the main built-in functionalities?</li>
+<li>Is gVXR validated?</li>
+<li>How to simulate a CT acquisition?</li>
+<li>How to use gVXR?</li>
+<li>Other ways to use gVXR</li>
+</ol>
+<!--
+:::::::::::::: {.columns}
+::: {.column width="40%"}
+contents...
+:::
+::: {.column width=100%}
+contents...
+:::
+::::::::::::::
+-->
+</div>
+<div id="what-is-gvirtualxray-gvxr" class="slide section level1">
+<h1>1. What is gVirtualXray (gVXR)?</h1>
+<div class="columns">
+<div class="column">
+<p><img src="img/QR_gVXR.png" style="width:30.0%" alt="QR_gVXR" /><br/>
+<a
+href="https://gvirtualxray.sourceforge.io/">https://gvirtualxray.sourceforge.io/</a></p>
+<ul>
+<li>API (application programming interface)</li>
+<li>relying on the <strong>Beer–Lambert law</strong></li>
+<li>to simulate X-ray images in realtime on a GPU (graphics processor
+unit)</li>
+<li>using triangular meshes.</li>
+</ul>
+</div><div class="column">
+<div class="float">
+<img src="img/wireframe_model2.png" style="width:50.0%"
+alt="Example of triangle meshes showed in wireframe." />
+<div class="figcaption">Example of triangle meshes showed in
+wireframe.</div>
+</div>
+</div>
+</div>
+<blockquote>
+<p>It is an alternative to Monte Carlo methods when
+scattering<sup>1</sup> can be ignored or speed is required.</p>
+</blockquote>
+<div class="footer">
+<p><sup>1</sup> Scattering may be added in the future</p>
+</div>
+</div>
+<div id="what-do-people-do-with-gvxr" class="slide section level1">
+<h1>What do people do with gVXR?</h1>
+<div class="columns">
+<div class="column">
+<p>Used in a wide range of applications, including:</p>
+<ul>
+<li>real-time medical simulators,</li>
+<li>proposing new imaging methods,</li>
+<li>prototype algorithms,</li>
+<li>studying noise removal techniques,</li>
+<li>teaching particle physics and x-ray imaging (250 students /
+year),</li>
+<li>predicting image quality and artifacts,</li>
+<li>optimise scans, and</li>
+<li>a lot of ML/AI nowadays</li>
+</ul>
+</div><div class="column">
+<div class="float">
+<img src="img/applications.png" style="width:100.0%"
+alt="Example of applications." />
+<div class="figcaption">Example of applications.</div>
+</div>
+</div>
+</div>
+</div>
+<div id="how-to-cite" class="slide section level1">
+<h1>How to cite?</h1>
+<p>Vidal, F.P.; Afshari, S.; Ahmed, S.; Albiol, A.; Albiol, F.; Béchet,
+É.; Bellot, A.C.; Bosse, S.; Burkhard, S.; Chahid, Y.; et al. X-ray
+simulations with gVXR in education, digital twining, experiment
+planning, and data analysis. Nucl. Instrum. Methods Phys. Res. Sect. B
+2025, 568, 165804. doi: <a
+href="https://doi.org/10.1016/j.nimb.2025.165804">10.1016/j.nimb.2025.165804</a>
+<img src="img/NIM-B.png" style="width:50.0%"
+alt="Front page of user article.png" /></p>
+</div>
+<div id="implementation" class="slide section level1">
+<h1>Implementation</h1>
+<ul>
+<li>R&amp;D started in the early 2000s, VXI<sup>1</sup> by Nicolas Freud
+(INSA-Lyon), and</li>
+<li>Its port on GPU when they became programmable (Bangor University,
+2007);</li>
+<li>Not a ray tracer, but a rasterizer!</li>
+<li>Reimplementation from scratch as open source project on <img
+src="img/sflogo.svg" height="30" alt="SourceForge" />
+<ul>
+<li>Registered on 2013-12-01;</li>
+<li>4544 commits on 2026-09-09 (v2.1.0). (average of 1 commit a day in
+12.5 years)</li>
+<li>Implemented in <img src="img/cpp-logo.png" height="30" alt="C++" />
+using <img src="img/OpenGL-logo.png" height="30" alt="OpenGL" />
+<ul>
+<li>173 C++ source files, 21036 lines of comments, 89950 lines of
+code</li>
+<li>123 C++ header files, 17482 lines of comments, 61203 lines of
+code</li>
+<li>69 CMake files, 1686 lines of comments, 5273 lines of code</li>
+<li>81 GLSL files, 4249 lines of comments, 2965 lines of code</li>
+<li>599 source code files, 49881 lines of comments, 199341 lines of
+code</li>
+</ul></li>
+<li>Wrapper for <img src="img/python-logo-generic.svg" height="30"
+alt="Python" />, <img src="img/Rlogo.svg" height="30" alt="R" />, <img
+src="img/ruby-crop.png" height="30" alt="Ruby" />, <img
+src="img/Tcl-powered.svg" height="30" alt="Tcl" />, <img
+src="img/Logo_C_sharp.svg" height="30" alt="C#" />, <img
+src="img/java-ar21.svg" height="30" alt="Java" />, and <img
+src="img/gnu-octave-logo-lnx.png" height="30" alt="GNU Octave" />.</li>
+</ul></li>
+</ul>
+<div class="footer">
+<p><sup>1</sup> Freud et al. (2006), “Fast and robust ray casting
+algorithms for virtual X-ray imaging”</p>
+</div>
+</div>
+<div id="cross-platform" class="slide section level1">
+<h1>Cross-platform</h1>
+<div class="columns">
+<div class="column">
+<ul>
+<li>Operating systems: <img
+src="img/201-2015528_windows-mac-linux-logo.jpg" height="50"
+alt="MS Windows, MacOs, and GNU/Linux." /></li>
+<li>CPUs:
+<ul>
+<li><img src="img/intel_icon-crop.svg" height="50"
+alt="Intel" /><br/></li>
+<li><img src="img/AMD_E_Blk_RGB.png" height="50" alt="AMD" /><br/></li>
+<li><img src="img/Arm_logo_blue_150LG.png" height="50"
+alt="ARM" /><br/></li>
+</ul></li>
+<li>GPUs:
+<ul>
+<li><img src="img/nvidia-logo-horiz-blk-16x9%201-crop.png" height="50"
+alt="NVIDIA" /><br/></li>
+<li><img src="img/AMD_E_Blk_RGB.png" height="50" alt="AMD" /><br/></li>
+<li><img src="img/intel_icon-crop.svg" height="50"
+alt="Intel" /><br/></li>
+<li><img src="img/Mesa3D_logo.svg" height="50" alt="Mesa 3D" />
+(software rendering with Mesa 3D)<br/></li>
+</ul></li>
+</ul>
+</div><div class="column">
+<ul>
+<li>Computers:
+<ul>
+<li>On-board computers (OBCs)
+<ul>
+<li><img src="img/pi_raspberry_icon.svg" height="50"
+alt="Raspberry Pi 5" /><br/></li>
+<li><img src="img/Nvidia_logo.svg" height="50" alt="NVIDIA" />
+Jetson</li>
+</ul></li>
+<li>Personal computers (PCs)
+<ul>
+<li><img src="img/laptop_computer_icon.svg" height="50"
+alt="Laptop" /><br/></li>
+<li><img src="img/computer_desktop_pc_icon.png" height="50"
+alt="Desktop" /><br/></li>
+</ul></li>
+<li>Data center and High-performance computing (HPC) systems
+<ul>
+<li>STFC SCARF</li>
+<li><img src="img/lgo_supercomputingWales-1.png" height="50"
+alt="Supercomputing Wales" /><br/></li>
+<li><img src="img/Google_Colaboratory_SVG_Logo.svg" height="50" />
+Google Colab<br/></li>
+<li><img src="img/Code_Ocean_logo_2021.svg" height="50"
+alt="Code Ocean" /> (used for reproducible research)</li>
+</ul></li>
+</ul></li>
+<li>Containerisation with <img src="img/Docker_logo.svg" height="50"
+alt="Docker." /><br/></li>
+</ul>
+</div>
+</div>
+</div>
+<div id="easy-installation-for-python" class="slide section level1">
+<h1>Easy installation for <img src="img/python-logo-generic.svg"
+height="60" alt="Python" /></h1>
+<ul>
+<li>Available on <img src="img/PyPI_logo.svg" height="90" alt="PyPi" />:
+<a
+href="https://pypi.org/project/gvxr/">https://pypi.org/project/gvxr/</a></li>
+<li>For MS Windows (x86_64 architecture only);</li>
+<li>GNU/Linux (x86_64 and aarch64 architectures)</li>
+</ul>
+<pre numbers="none"><code>pip install gvxr</code></pre>
+</div>
+<div id="jupyter-notebook-1-test-installation"
+class="slide section level1">
+<h1>Jupyter Notebook 1: Test installation</h1>
+<ul>
+<li><a
+href="../../notebooks/morning/test_installation.ipynb">test_installation.ipynb</a></li>
+<li>Run the quick test script provided with gVirtualXray’s Python
+package to make sure the installation is working well on your
+system.</li>
+<li><a
+href="https://colab.research.google.com/github/TomographicImaging/gVXR-training-dXCT2026/blob/main/notebooks/morning/test_installation.ipynb"><img
+src="https://colab.research.google.com/assets/colab-badge.svg"
+alt="Open In Colab" /></a></li>
+</ul>
+<p><img src="img/jupyter1.png" style="width:50.0%" /><br/></p>
+</div>
+<div id="what-can-we-scan" class="slide section level1">
+<h1>2. What can we scan?</h1>
+<ul>
+<li>Surface mesh from files (all common formats are supported, inc.
+STL)</li>
+</ul>
+<p><em>STL file from 3D laser scanning</em></p>
+<div class="float">
+<img src="img/models/welsh-dragon.png" style="width:30.0%"
+alt="Welsh dragon" />
+<div class="figcaption">Welsh dragon</div>
+</div>
+</div>
+<div id="what-can-we-scan-1" class="slide section level1">
+<h1>2. What can we scan?</h1>
+<ul>
+<li>Surface mesh from files (all common formats are supported, inc.
+STL)</li>
+<li>Multi-part models using multiple different materials</li>
+</ul>
+<p><em>Lungman anthropomorphic chest phantom (Kyoto Kagaku, Tokyo,
+Japan)</em></p>
+<div class="float">
+<img src="img/models/pediatric_model.png" style="width:15.0%"
+alt="Paediatric phantom from the ERROR project." />
+<div class="figcaption">Paediatric phantom from the ERROR project.</div>
+</div>
+</div>
+<div id="what-can-we-scan-2" class="slide section level1">
+<h1>2. What can we scan?</h1>
+<ul>
+<li>Surface mesh from files (all common formats are supported, inc.
+STL)</li>
+<li>Multi-part models using multiple different materials</li>
+<li>Volume meshes (INP files from Abaqus, EXPERIMENTAL)</li>
+</ul>
+<p><em>Tooth model</em></p>
+<div class="float">
+<img src="img/models/tetrahedon.png" style="width:30.0%"
+alt="Volumetric mesh made of tetrahedrons." />
+<div class="figcaption">Volumetric mesh made of tetrahedrons.</div>
+</div>
+</div>
+<div id="what-can-we-scan-3" class="slide section level1">
+<h1>2. What can we scan?</h1>
+<ul>
+<li>Surface mesh from files (all common formats are supported, inc.
+STL)</li>
+<li>Multi-part models using multiple different materials</li>
+<li>Volume meshes (INP files from Abaqus, EXPERIMENTAL)</li>
+<li>Implicit modelling (organic-looking <span
+class="math inline">\(n\)</span>-dimensional isosurfaces)</li>
+</ul>
+<table>
+<colgroup>
+<col width="24%" />
+<col width="25%" />
+<col width="25%" />
+<col width="24%" />
+</colgroup>
+<thead>
+<tr>
+<th>Far from each other</th>
+<th>Getting closer</th>
+<th>Close from each other</th>
+<th>Positive + negative density fields</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="img/models/implicit_modelling1.png"
+style="width:80.0%" /></td>
+<td><img src="img/models/implicit_modelling2.png"
+style="width:80.0%" /></td>
+<td><img src="img/models/implicit_modelling3.png"
+style="width:80.0%" /></td>
+<td><img src="img/models/implicit_modelling4.png"
+style="width:80.0%" /></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="what-can-we-scan-4" class="slide section level1">
+<h1>2. What can we scan?</h1>
+<ul>
+<li>Surface mesh from files (all common formats are supported, inc.
+STL)</li>
+<li>Multi-part models using multiple different materials</li>
+<li>Volume meshes (INP files from Abaqus, EXPERIMENTAL)</li>
+<li>Implicit modelling (organic-looking <span
+class="math inline">\(n\)</span>-dimensional isosurfaces)</li>
+<li>Customisable built-in phantoms</li>
+</ul>
+<table>
+<colgroup>
+<col width="8%" />
+<col width="7%" />
+<col width="24%" />
+<col width="27%" />
+<col width="32%" />
+</colgroup>
+<thead>
+<tr>
+<th>Welsh dragon</th>
+<th>Step wedge</th>
+<th>Foam</th>
+<th>Geometric shapes</th>
+<th>Lungman</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="img/models/welsh-dragon.png" height="200" /></td>
+<td><img src="img/models/step-wedge.png" height="200" /></td>
+<td><img src="img/models/foam.png" height="200" /></td>
+<td><img src="img/models/cyl_sph.png" height="200" /></td>
+<td><img src="img/models/lungman_wireframe.png" height="200" /></td>
+</tr>
+<tr>
+<td></td>
+<td>Fully customisable</td>
+<td>Fully customisable</td>
+<td>Cuboids, spheres, cylinders,</td>
+<td>To appear</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td>inc. boolean operations</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="beer-lambert-law-monochromatic" class="slide section level1">
+<h1>3. Beer-Lambert law (monochromatic)</h1>
+<p><span class="math display">\[
+I_{mono}(x,y)  =
+  E \times \mathbf{D}(E) \; \exp\left({-\sum_i \mu_i
+(E) \; \mathbf{d}_{i}(x,y)}\right)
+\]</span></p>
+<ul>
+<li><span class="math inline">\(E\)</span> is the Energy <span
+class="math inline">\(E\)</span> emitted by the source</li>
+<li><span class="math inline">\(\mathbf{D}(E)\)</span> is the number of
+photons of Energy <span class="math inline">\(E\)</span> emitted by the
+source</li>
+<li><span class="math inline">\(\mu_i(E)\)</span> is the linear
+attenuation coefficient at Energy <span class="math inline">\(E\)</span>
+of the <span class="math inline">\(i\)</span>-th material;</li>
+<li><span class="math inline">\(\mathbf{d}_i(x, y)\)</span> is the path
+length of the ray from the X-ray source to pixel <span
+class="math inline">\((x,y)\)</span> crossing the <span
+class="math inline">\(i\)</span>-th material.</li>
+</ul>
+</div>
+<div id="jupyter-notebook-2-first-x-ray-simulation"
+class="slide section level1">
+<h1>Jupyter Notebook 2: First X-ray simulation</h1>
+<ul>
+<li><a
+href="../../notebooks/morning/first_xray_simulation.ipynb">first_xray_simulation.ipynb</a></li>
+<li>Explore the step-by-step notebook to create our first X-ray
+radiograph.</li>
+<li>A mono-material object is imaged with a monochromatic source and an
+ideal detector.</li>
+<li>We show how to visualise the X-ray radiograph and take a screenshot
+of the 3D visualisation of the simulation environment.</li>
+<li><a
+href="https://colab.research.google.com/github/TomographicImaging/gVXR-training-dXCT2026/blob/main/notebooks/morning/first_xray_simulation.ipynb"><img
+src="https://colab.research.google.com/assets/colab-badge.svg"
+alt="Open In Colab" /></a></li>
+</ul>
+<p><img src="img/jupyter2.png" style="width:50.0%" /><br/></p>
+</div>
+<div id="jupyter-notebook-3-numpy-integration"
+class="slide section level1">
+<h1>Jupyter Notebook 3: Numpy integration</h1>
+<ul>
+<li><a
+href="../../notebooks/morning/numpy_integration.ipynb">numpy_integration.ipynb</a></li>
+<li>Experiment with the Numpy integration to speed up the
+simulation.</li>
+<li><a
+href="https://colab.research.google.com/github/TomographicImaging/gVXR-training-dXCT2026/blob/main/notebooks/morning/numpy_integration.ipynb"><img
+src="https://colab.research.google.com/assets/colab-badge.svg"
+alt="Open In Colab" /></a></li>
+</ul>
+<p><img src="img/jupyter3.png" style="width:50.0%" /><br/></p>
+</div>
+<div id="built-in-functionalities" class="slide section level1">
+<h1>4. Built-in functionalities</h1>
+<div class="columns">
+<div class="column">
+<ol style="list-style-type: decimal">
+<li><strong>Flexible material composition</strong>;</li>
+</ol>
+</div><div class="column">
+<div class="float">
+<img src="img/material_element.png" style="width:80.0%"
+alt="Chemical elements" />
+<div class="figcaption">Chemical elements</div>
+</div>
+<div class="float">
+<img src="img/material_compound.png" style="width:80.0%"
+alt="Compounds" />
+<div class="figcaption">Compounds</div>
+</div>
+<div class="float">
+<img src="img/material_mixture.png" style="width:80.0%"
+alt="Mixtures" />
+<div class="figcaption">Mixtures</div>
+</div>
+</div>
+</div>
+<div class="footer">
+<p><sup>1</sup> Text in <strong>bold characters</strong> marks
+components validated against Monte Carlo simulations}</p>
+</div>
+</div>
+<div id="built-in-functionalities-1" class="slide section level1">
+<h1>4. Built-in functionalities</h1>
+<div class="columns">
+<div class="column">
+<ol style="list-style-type: decimal">
+<li><strong>Flexible material composition</strong>;</li>
+<li><strong>Monochromatic</strong> &amp; <strong>polychromatic</strong>
+spectra:</li>
+</ol>
+</div><div class="column">
+<div class="float">
+<img src="img/spectra.png" style="width:80.0%"
+alt="Spectrum comparision" />
+<div class="figcaption">Spectrum comparision</div>
+</div>
+</div>
+</div>
+<div class="footer">
+<p><sup>1</sup> Text in <strong>bold characters</strong> marks
+components validated against Monte Carlo simulations}</p>
+</div>
+</div>
+<div id="beer-lambert-law-polychromatic" class="slide section level1">
+<h1>4.2) Beer-Lambert law (polychromatic)</h1>
+<p><span class="math display">\[
+I_{poly}(x,y)  =
+  \sum_j E_j \times \mathbf{D}(E_j) \; \exp\left({-\sum_i \mu_i
+(E_j) \; \mathbf{d}_{i}(x,y)}\right)
+\]</span></p>
+<ul>
+<li><strong>Polychromatism (<span
+class="math inline">\(\sum_j\)</span>):</strong> Images are integrated
+over <span class="math inline">\(J\)</span> energy bins.</li>
+</ul>
+</div>
+<div id="built-in-functionalities-2" class="slide section level1">
+<h1>4. Built-in functionalities</h1>
+<div class="columns">
+<div class="column">
+<ol style="list-style-type: decimal">
+<li><strong>Flexible material composition</strong>;</li>
+<li><strong>Monochromatic</strong> &amp; <strong>polychromatic</strong>
+spectra:</li>
+</ol>
+<ul>
+<li>including kV and beam filtration;</li>
+</ul>
+</div><div class="column">
+<div class="float">
+<img src="img/images-polychromatism.png" style="width:100.0%"
+alt="Image comparision (with/without filtration)" />
+<div class="figcaption">Image comparision (with/without
+filtration)</div>
+</div>
+<div class="float">
+<img src="img/profiles-polychromatism.png" style="width:80.0%"
+alt="Profile comparision (with/without filtration)" />
+<div class="figcaption">Profile comparision (with/without
+filtration)</div>
+</div>
+</div>
+</div>
+<div class="footer">
+<p><sup>1</sup> Text in <strong>bold characters</strong> marks
+components validated against Monte Carlo simulations}</p>
+</div>
+</div>
+<div id="jupyter-notebook-4-polychromtic-x-ray-tube-spectra"
+class="slide section level1">
+<h1>Jupyter Notebook 4: Polychromtic X-ray tube spectra</h1>
+<ul>
+<li><a
+href="../../notebooks/morning/polychromatism.ipynb">polychromatism.ipynb</a></li>
+<li>In this notebook we explore how to specify polychromtic X-ray tube
+spectra, without and with filtration.</li>
+<li>We also shows how to plot the spectrum.</li>
+<li><a
+href="https://colab.research.google.com/github/TomographicImaging/gVXR-training-dXCT2026/blob/main/notebooks/morning/polychromatism.ipynb"><img
+src="https://colab.research.google.com/assets/colab-badge.svg"
+alt="Open In Colab" /></a></li>
+</ul>
+<p><img src="img/jupyter4.png" style="width:50.0%" /><br/></p>
+</div>
+<div id="built-in-functionalities-3" class="slide section level1">
+<h1>4. Built-in functionalities</h1>
+<div class="columns">
+<div class="column">
+<ol style="list-style-type: decimal">
+<li><strong>Flexible material composition</strong>;</li>
+<li><strong>Monochromatic</strong> &amp; <strong>polychromatic</strong>
+spectra:</li>
+</ol>
+<ul>
+<li>including kV and beam filtration;</li>
+</ul>
+<ol start="3" style="list-style-type: decimal">
+<li><strong>Parallel beams</strong>, <strong>point sources</strong>,
+&amp; <strong>focal spots</strong><sup>1</sup>;</li>
+</ol>
+</div><div class="column">
+<table>
+<thead>
+<tr>
+<th>Focal spot type</th>
+<th>Size</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Point</td>
+<td>0.0 mm</td>
+</tr>
+<tr>
+<td>Cube</td>
+<td>0.25 × 0.25 × 0.25 mm</td>
+</tr>
+<tr>
+<td>Square</td>
+<td>0.25 × 0.25 mm</td>
+</tr>
+<tr>
+<td>Rectangle</td>
+<td>0.25 × 0.5 mm</td>
+</tr>
+<tr>
+<td>Rectangle rotated by 25°</td>
+<td>0.25 × 0.5 mm</td>
+</tr>
+</tbody>
+</table>
+<div class="float">
+<img src="img/focal_spot-profiles.png" style="width:60.0%"
+alt="Focal spot type comparision" />
+<div class="figcaption">Focal spot type comparision</div>
+</div>
+</div>
+</div>
+<div class="footer">
+<p><sup>1</sup> Text in <strong>bold characters</strong> marks
+components validated against Monte Carlo simulations}</p>
+</div>
+</div>
+<div id="beer-lambert-law-polychromatic-focal-spot"
+class="slide section level1">
+<h1>4.3) Beer-Lambert law (polychromatic + focal spot)</h1>
+<p><span class="math display">\[
+I_{FS}(x,y)  =
+  \sum_k \sum_j E_j \times \mathbf{D}(E_j) \; \exp\left({-\sum_i \mu_i
+(E_j) \; \mathbf{d}_{i,k}(x,y)}\right)
+\]</span></p>
+<ul>
+<li><strong>Focal spot <span
+class="math inline">\(\left(\sum_k\right)\)</span>:</strong> Images are
+integrated over <span class="math inline">\(K\)</span> point
+sources.</li>
+</ul>
+</div>
+<div id="built-in-functionalities-4" class="slide section level1">
+<h1>4. Built-in functionalities</h1>
+<div class="columns">
+<div class="column">
+<ol style="list-style-type: decimal">
+<li><strong>Flexible material composition</strong>;</li>
+<li><strong>Monochromatic</strong> &amp; <strong>polychromatic</strong>
+spectra:</li>
+</ol>
+<ul>
+<li>including kV and beam filtration;</li>
+</ul>
+<ol start="3" style="list-style-type: decimal">
+<li><strong>Parallel beams</strong>, <strong>point sources</strong>,
+&amp; <strong>focal spots</strong><sup>1</sup>;</li>
+<li><strong>Scintillation</strong>;</li>
+</ol>
+</div><div class="column">
+<div class="float">
+<img src="img/energy_responses-noise-images-profiles.png"
+style="width:100.0%" alt="Scintillator comparison (gVXR vs. Geant4)" />
+<div class="figcaption">Scintillator comparison (gVXR vs. Geant4)</div>
+</div>
+</div>
+</div>
+<div class="footer">
+<p><sup>1</sup> Text in <strong>bold characters</strong> marks
+components validated against Monte Carlo simulations}</p>
+</div>
+</div>
+<div id="beer-lambert-law-polychromatic-focal-spot-scintillation"
+class="slide section level1">
+<h1>4.4) Beer-Lambert law (polychromatic + focal spot +
+scintillation)</h1>
+<p><span class="math display">\[
+I(x,y)  =
+  \sum_k \sum_j \mathrm{R}(E_j) \times \mathbf{D}(E_j) \;
+\exp\left({-\sum_i \mu_i
+(E_j) \; \mathbf{d}_{i,k}(x,y)}\right)
+\]</span></p>
+<ul>
+<li><strong>Scintillator <span
+class="math inline">\(\left(\mathbf{R}(E_j)\right)\)</span>:</strong>
+energy response of the detector, a lookup table.</li>
+</ul>
+</div>
+<div id="jupyter-notebook-5-scintillation" class="slide section level1">
+<h1>Jupyter Notebook 5: Scintillation</h1>
+<ul>
+<li><a
+href="../../notebooks/morning/scintillation.ipynb">scintillation.ipynb</a></li>
+<li>In this notebook we explore how to create a detector with a
+scintillator.</li>
+<li>We also shows how to plot the corresponding energy response.</li>
+<li><a
+href="https://colab.research.google.com/github/TomographicImaging/gVXR-training-dXCT2026/blob/main/notebooks/morning/scintillation.ipynb"><img
+src="https://colab.research.google.com/assets/colab-badge.svg"
+alt="Open In Colab" /></a></li>
+</ul>
+<p><img src="img/jupyter5.png" style="width:50.0%" /><br/></p>
+</div>
+<div id="built-in-functionalities-5" class="slide section level1">
+<h1>4. Built-in functionalities</h1>
+<div class="columns">
+<div class="column">
+<ol style="list-style-type: decimal">
+<li><strong>Flexible material composition</strong>;</li>
+<li><strong>Monochromatic</strong> &amp; <strong>polychromatic</strong>
+spectra:</li>
+</ol>
+<ul>
+<li>including kV and beam filtration;</li>
+</ul>
+<ol start="3" style="list-style-type: decimal">
+<li><strong>Parallel beams</strong>, <strong>point sources</strong>,
+&amp; <strong>focal spots</strong><sup>1</sup>;</li>
+<li><strong>Scintillation</strong>;</li>
+<li>Impulse response of detectors;</li>
+</ol>
+</div><div class="column">
+<div class="float">
+<img src="img/LSF.png" style="width:20.0%" alt="LSF" />
+<div class="figcaption">LSF</div>
+</div>
+<div class="float">
+<img src="img/LSF-comparison.png" style="width:50.0%"
+alt="Image comparision (with/without blur)" />
+<div class="figcaption">Image comparision (with/without blur)</div>
+</div>
+</div>
+</div>
+</div>
+<div id="beer-lambert-law-polychromatic-focal-spot-scintillation-psf"
+class="slide section level1">
+<h1>4.5) Beer-Lambert law (polychromatic + focal spot + scintillation +
+PSF)</h1>
+<p><span class="math display">\[
+I_{PSF}(x,y)  = PSF * \sum_k \sum_j \mathbf{R}(E_j) \times
+\mathbf{D}(E_j) \; \exp\left({-\sum_i \mu_i
+(E_j) \; \mathbf{d}_{i,k}(x,y)}\right)
+\]</span></p>
+<ul>
+<li><strong>Detector blur <span
+class="math inline">\(\left(PSF\right)\)</span>:</strong> 2D impulse
+response of the detector, a low-pass convolution filter;</li>
+<li><span class="math inline">\(*\)</span>: spatial convolution
+operator.</li>
+</ul>
+</div>
+<div id="built-in-functionalities-6" class="slide section level1">
+<h1>4. Built-in functionalities</h1>
+<div class="columns">
+<div class="column">
+<ol style="list-style-type: decimal">
+<li><strong>Flexible material composition</strong>;</li>
+<li><strong>Monochromatic</strong> &amp; <strong>polychromatic</strong>
+spectra:</li>
+</ol>
+<ul>
+<li>including kV and beam filtration;</li>
+</ul>
+<ol start="3" style="list-style-type: decimal">
+<li><strong>Parallel beams</strong>, <strong>point sources</strong>,
+&amp; <strong>focal spots</strong><sup>1</sup>;</li>
+<li><strong>Scintillation</strong>;</li>
+<li>Impulse response of detectors;</li>
+<li>Noise (electronic &amp; <strong>photonic</strong>).</li>
+</ol>
+</div><div class="column">
+<div class="float">
+<img src="img/compare-6000000photons.png" style="width:100.0%"
+alt="Poisson noise comparison (gVXR vs. Geant4)" />
+<div class="figcaption">Poisson noise comparison (gVXR vs. Geant4)</div>
+</div>
+</div>
+</div>
+<div class="footer">
+<p><sup>1</sup> Text in <strong>bold characters</strong> marks
+components validated against Monte Carlo simulations}</p>
+</div>
+</div>
+<div
+id="beer-lambert-law-polychromatic-focal-spot-scintillation-psf-electronic-noise-photonic-noise"
+class="slide section level1">
+<h1>4.6) Beer-Lambert law (polychromatic + focal spot + scintillation +
+PSF + electronic noise &amp; photonic noise)</h1>
+<p><span class="math display">\[
+I_{noisy}(x,y)  = \mathrm{Gauss}(\theta, \sigma) + gain \times
+  \left(PSF * \sum_k \sum_j \mathbf{R}(E_j) \times
+\mathrm{Poisson}\left(\mathbf{D}(E_j) \; \exp\left({-\sum_i \mu_i
+(E_j) \; \mathbf{d}_{i,k}(x,y)}\right)\right)\right)
+\]</span></p>
+<ul>
+<li><strong>Electronic noise <span
+class="math inline">\(\left(\mathrm{Gauss}(\theta,
+\sigma)\right)\)</span>:</strong> additive Gaussian noise of average
+<span class="math inline">\(\theta\)</span> and standard deviation <span
+class="math inline">\(\sigma\)</span> corresponding to the dark field
+image</li>
+<li><strong>Detector gain <span
+class="math inline">\(\left(gain\right)\)</span>:</strong> a
+multiplicative factor</li>
+<li><strong>Photonic noise <span
+class="math inline">\(\left(\mathrm{Poisson}\right)\)</span>:</strong>
+Poisson noise that depends on the number of photons.</li>
+</ul>
+</div>
+<div id="final-approximated-model" class="slide section level1">
+<h1>4.6) Final approximated model</h1>
+<ul>
+<li><strong>Models of Poisson noise: computationally slow</strong>;</li>
+<li>Complexity for previous slide: <span
+class="math inline">\(\mathcal{O}(n^3)\)</span>:
+<ul>
+<li>one call of <span
+class="math inline">\(\mathrm{Poisson}()\)</span></li>
+<li>for every pixel
+<ul>
+<li>for every energy bin
+<ul>
+<li>for every focal spot source point</li>
+</ul></li>
+</ul></li>
+</ul></li>
+<li>Approximation: <span class="math inline">\(\mathcal{O}(n)\)</span>:
+one call for every pixel only.</li>
+</ul>
+<p><span class="math display">\[
+    e2p = \frac{\sum_j \mathbf{D}(E_j)}{\sum_j \mathbf{R}(E_j) \,
+\mathbf{D}(E_j)} = \frac{1}{p2e}
+\]</span></p>
+<ul>
+<li><strong>Scaling factor (<span
+class="math inline">\(e2p\)</span>):</strong> convert an integrated
+energy (<span class="math inline">\(I\)</span>) in into an approximated
+number of photons;</li>
+<li><strong>Scaling factor (<span
+class="math inline">\(p2e\)</span>):</strong> convert an approximated
+number of photons in an integrated energy.</li>
+</ul>
+<p><span class="math display">\[
+I_{final}(x,y)  = \mathrm{Gauss}(\theta, \sigma) + gain \times
+  \left(PSF * \left(p2e \times \mathrm{Poisson}\left(I(x,y)\times
+e2p\right)\right)\right)
+\]</span></p>
+</div>
+<div id="built-in-functionalities-7" class="slide section level1">
+<h1>4. Built-in functionalities</h1>
+<div class="columns">
+<div class="column">
+<ol style="list-style-type: decimal">
+<li><strong>Flexible material composition</strong>;</li>
+<li><strong>Monochromatic</strong> &amp; <strong>polychromatic</strong>
+spectra:</li>
+</ol>
+<ul>
+<li>including kV and beam filtration;</li>
+</ul>
+<ol start="3" style="list-style-type: decimal">
+<li><strong>Parallel beams</strong>, <strong>point sources</strong>,
+&amp; <strong>focal spots</strong><sup>1</sup>;</li>
+<li><strong>Scintillation</strong>;</li>
+<li>Impulse response of detectors;</li>
+<li>Noise (electronic &amp; <strong>photonic</strong>).</li>
+<li>Interactive 3D visualization</li>
+</ol>
+</div><div class="column">
+<div class="float">
+<video src="img/visualisation.mp4" style="width:50.0%" controls=""><a
+href="img/visualisation.mp4">3D visualisation</a></video>
+<div class="figcaption">3D visualisation</div>
+</div>
+</div>
+</div>
+<div class="footer">
+<p><sup>1</sup> Text in <strong>bold characters</strong> marks
+components validated against Monte Carlo simulations}</p>
+</div>
+</div>
+<div id="jupyter-notebook-6-3d-visualisation"
+class="slide section level1">
+<h1>Jupyter Notebook 6: 3D visualisation</h1>
+<ul>
+<li><a
+href="../../notebooks/morning/visualisation.ipynb">visualisation.ipynb</a></li>
+<li>Get familiar with the three different 3D visualisation methods
+provided with gVXR, including:</li>
+</ul>
+<ol style="list-style-type: decimal">
+<li>K3D to interactively visualise the 3D scene in a Jupyter
+widget,</li>
+<li>a customisable static 3D visualisation, and</li>
+<li>an interactive 3D visualisation window.</li>
+</ol>
+<ul>
+<li>In this notebook you will also create a multi-material sample.</li>
+<li><a
+href="https://colab.research.google.com/github/TomographicImaging/gVXR-training-dXCT2026/blob/main/notebooks/morning/visualisation.ipynb"><img
+src="https://colab.research.google.com/assets/colab-badge.svg"
+alt="Open In Colab" /></a></li>
+</ul>
+<p><img src="img/jupyter6.png" style="width:50.0%" /><br/></p>
+</div>
+<div id="is-gvxr-validated-1" class="slide section level1">
+<h1>5. Is gVXR validated? <sup>1</sup></h1>
+<div class="columns">
+<div class="column">
+<ul>
+<li>Against state-of-the art <strong>Monte Carlo simulation</strong>,
+namely Geant4/Gate</li>
+</ul>
+</div><div class="column">
+<p><strong>10 days with GATE vs. 1 second with gVirtualXray for 128 ×
+128 pixels</strong> <img src="img/full_comparison-paediatrics-crop.png"
+style="width:70.0%" alt="Image comparison (gVXR vs. Geant4)" /><br />
+<img src="img/profiles-paediatrics-crop.png" style="width:70.0%"
+alt="Profile comparison (gVXR vs. Geant4)" /><br />
+MAPE: 3.12%, ZNCC: 99.96%, SSIM: 0.99</p>
+</div>
+</div>
+<div class="footer">
+<p><sup>1</sup> Pointon et al. (2023), “Simulation of X-ray projections
+on GPU: Benchmarking gVirtualXray with clinically realistic
+phantoms”</p>
+</div>
+</div>
+<div id="is-gvxr-validated-1-1" class="slide section level1">
+<h1>5. Is gVXR validated? <sup>1</sup></h1>
+<div class="columns">
+<div class="column">
+<ul>
+<li>Against state-of-the art <strong>Monte Carlo simulation</strong>,
+namely Geant4/Gate</li>
+<li>Against <strong>DRRs</strong> computed from experimental data
+acquired with a <strong>clinically utilized device</strong></li>
+</ul>
+</div><div class="column">
+<p><img src="img/lungman-compare-projs-plastimatch-rl-crop.png"
+style="width:100.0%" alt="Image comparison (gVXR vs. real DRR)" /><br />
+<img src="img/lungman-profiles-projection-postprocessing-crop.png"
+style="width:100.0%"
+alt="Profile comparison (gVXR vs. real DRR)" /><br />
+MAPE: 1.76%, ZNCC: 99.66%, SSIM: 0.98</p>
+</div>
+</div>
+<div class="footer">
+<p><sup>1</sup> Pointon et al. (2023), “Simulation of X-ray projections
+on GPU: Benchmarking gVirtualXray with clinically realistic
+phantoms”</p>
+</div>
+</div>
+<div id="is-gvxr-validated-1-2" class="slide section level1">
+<h1>5. Is gVXR validated? <sup>1</sup></h1>
+<div class="columns">
+<div class="column">
+<ul>
+<li>Against state-of-the art <strong>Monte Carlo simulation</strong>,
+namely Geant4/Gate</li>
+<li>Against <strong>DRRs</strong> computed from experimental data
+acquired with a <strong>clinically utilized device</strong></li>
+<li>Against <strong>digital radiographs</strong> acquired with a
+<strong>clinically utilized device</strong></li>
+</ul>
+</div><div class="column">
+<p><img src="img/lungman-projection-harder-crop.png"
+style="width:100.0%" alt="Image comparison (gVXR vs. real DR)" /><br />
+<img src="img/lungman-profiles-projection-postprocessing-crop.png"
+style="width:100.0%"
+alt="Profile comparison (gVXR vs. real DR)" /><br />
+MAPE: 1.56%, ZNCC: 98.91%, SSIM: 0.94</p>
+</div>
+</div>
+<div class="footer">
+<p><sup>1</sup> Pointon et al. (2023), “Simulation of X-ray projections
+on GPU: Benchmarking gVirtualXray with clinically realistic
+phantoms”</p>
+</div>
+</div>
+<div id="is-gvxr-validated-1-3" class="slide section level1">
+<h1>5. Is gVXR validated? <sup>1</sup></h1>
+<div class="columns">
+<div class="column">
+<ul>
+<li>Against state-of-the art <strong>Monte Carlo simulation</strong>,
+namely Geant4/Gate</li>
+<li>Against <strong>DRRs</strong> computed from experimental data
+acquired with a <strong>clinically utilized device</strong></li>
+<li>Against <strong>digital radiographs</strong> acquired with a
+<strong>clinically utilized device</strong></li>
+<li>Against <strong>CT slices</strong> from experimental data acquired
+with a <strong>clinically utilized device</strong></li>
+</ul>
+</div><div class="column">
+<p><img src="img/CT-last-slice-crop.png" style="width:100.0%"
+alt="Image comparison (gVXR vs. real CT)" /><br />
+<img src="img/profiles-lungman_CT-last_slice-crop.png"
+style="width:100.0%"
+alt="Profile comparison (gVXR vs. real CT)" /><br />
+MAPE: 4.46%, ZNCC: 99.05%, SSIM: 0.82</p>
+</div>
+</div>
+<div class="footer">
+<p><sup>1</sup> Pointon et al. (2023), “Simulation of X-ray projections
+on GPU: Benchmarking gVirtualXray with clinically realistic
+phantoms”</p>
+</div>
+</div>
+<div id="is-gvxr-fast" class="slide section level1">
+<h1>Is gVXR fast?</h1>
+<p>It was initially used in realtime medical VR for training purposes.
+So speed and accuracy are both requirements and tradeoffs must be
+found!</p>
+<div class="columns">
+<div class="column">
+<ul>
+<li>Spectrum: polychromatic with 50 energy bins</li>
+<li>Resolution: 100 × 100 pixels</li>
+<li>Flat field images: 10</li>
+<li>Number of threads for the Monte Carlo simulation: 24</li>
+<li>CPU: AMD Ryzen 5900X</li>
+<li>GPU: NVIDIA GeForce RTX 4060 Ti</li>
+</ul>
+</div><div class="column">
+<div class="float">
+<img src="img/compare-775000photons.png" style="width:80.0%"
+alt="Comparison: Geant4 vs gVXR" />
+<div class="figcaption">Comparison: Geant4 vs gVXR</div>
+</div>
+</div>
+</div>
+<p>::::::</p>
+</div>
+<div id="runtimes" class="slide section level1">
+<h1>Runtimes</h1>
+<table>
+<tbody>
+<tr>
+<td align="center"><strong>Photon count</strong></td>
+<td align="center"><strong>Execution time</strong></td>
+<td align="center"><strong>Execution time</strong></td>
+<td align="center"><strong>Speed-up factor</strong></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center"><strong>with Gate</strong></td>
+<td align="center"><strong>with gVXR</strong></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center"><strong>[in hh:mm:ss]</strong></td>
+<td align="center"><strong>[in ms]</strong></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">100,000 × 11 00</td>
+<td align="center">:01:47</td>
+<td align="center">32</td>
+<td align="center">3,378</td>
+</tr>
+<tr>
+<td align="center">275,000 × 11 00</td>
+<td align="center">:01:47</td>
+<td align="center">32</td>
+<td align="center">3,307</td>
+</tr>
+<tr>
+<td align="center">775,000 × 11 00</td>
+<td align="center">:01:48</td>
+<td align="center">35</td>
+<td align="center">3,090</td>
+</tr>
+<tr>
+<td align="center">2,150,000 × 11 00</td>
+<td align="center">:01:51</td>
+<td align="center">34</td>
+<td align="center">3,273</td>
+</tr>
+<tr>
+<td align="center">6,000,000 × 11 00</td>
+<td align="center">:01:57</td>
+<td align="center">31</td>
+<td align="center">3,812</td>
+</tr>
+<tr>
+<td align="center">16,000,000 × 11 00</td>
+<td align="center">:02:22</td>
+<td align="center">36</td>
+<td align="center">3,958</td>
+</tr>
+<tr>
+<td align="center">46,000,000 × 11 00</td>
+<td align="center">:05:24</td>
+<td align="center">40</td>
+<td align="center">8,059</td>
+</tr>
+<tr>
+<td align="center">130,000,000 × 11 00</td>
+<td align="center">:13:24</td>
+<td align="center">36 2</td>
+<td align="center">2,433</td>
+</tr>
+<tr>
+<td align="center">360,000,000 × 11 00</td>
+<td align="center">:36:34</td>
+<td align="center">36 6</td>
+<td align="center">0,783</td>
+</tr>
+<tr>
+<td align="center">1,000,000,000 × 11 01</td>
+<td align="center">:41:07</td>
+<td align="center">31 1</td>
+<td align="center">94,208</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="ct-simulation" class="slide section level1">
+<h1>6. CT simulation</h1>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="dt">void</span> computeCTAcquisition<span class="op">(</span><span class="at">const</span> <span class="bu">std::</span>string <span class="op">&amp;</span>   aProjectionOutputPath<span class="op">,</span></span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>        <span class="at">const</span> <span class="bu">std::</span>string <span class="op">&amp;</span>     aScreenshotOutputPath<span class="op">,</span></span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>        <span class="dt">unsigned</span> <span class="dt">int</span>    aNumberOfProjections<span class="op">,</span></span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>        <span class="dt">float</span>   aFirstAngle<span class="op">,</span></span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>        <span class="dt">bool</span>    anIncludeLastAngleFlag<span class="op">,</span></span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>        <span class="dt">float</span>   aLastAngle<span class="op">,</span></span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a>        <span class="dt">unsigned</span> <span class="dt">int</span>    aNumberOfWhiteImagesInFlatField<span class="op">,</span></span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a>        <span class="dt">float</span>   aPositionOfCentreOfRotationX<span class="op">,</span></span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a>        <span class="dt">float</span>   aPositionOfCentreOfRotationY<span class="op">,</span></span>
+<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a>        <span class="dt">float</span>   aPositionOfCentreOfRotationZ<span class="op">,</span></span>
+<span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a>        <span class="at">const</span> <span class="bu">std::</span>string <span class="op">&amp;</span>     aUnitOfLength<span class="op">,</span></span>
+<span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a>        <span class="dt">float</span>   aAxisOfRotationX<span class="op">,</span></span>
+<span id="cb2-13"><a href="#cb2-13" tabindex="-1"></a>        <span class="dt">float</span>   aAxisOfRotationY<span class="op">,</span></span>
+<span id="cb2-14"><a href="#cb2-14" tabindex="-1"></a>        <span class="dt">float</span>   aAxisOfRotationZ<span class="op">,</span></span>
+<span id="cb2-15"><a href="#cb2-15" tabindex="-1"></a>        <span class="dt">bool</span>    anIntegrateEnergyFlag <span class="op">=</span> <span class="kw">true</span><span class="op">,</span></span>
+<span id="cb2-16"><a href="#cb2-16" tabindex="-1"></a>        <span class="dt">unsigned</span> <span class="dt">int</span>    aVerboseLevel <span class="op">=</span> <span class="dv">0</span> </span>
+<span id="cb2-17"><a href="#cb2-17" tabindex="-1"></a>    <span class="op">)</span></span></code></pre></div>
+</div>
+<div id="jupyter-notebook-7-segmentation-to-simulation"
+class="slide section level1">
+<h1>Jupyter Notebook 7: Segmentation to simulation</h1>
+<ul>
+<li><a
+href="../../notebooks/morning/segmentation-to-CT_scan-simulation.ipynb">segmentation-to-CT_scan-simulation</a></li>
+<li>Create a CT reconstruction from data simulated using a segmented
+image to model the sample.</li>
+<li><a
+href="https://colab.research.google.com/github/TomographicImaging/gVXR-training-dXCT2026/blob/main/notebooks/morning/segmentation-to-CT_scan-simulation.ipynb"><img
+src="https://colab.research.google.com/assets/colab-badge.svg"
+alt="Open In Colab" /></a></li>
+</ul>
+<p><img src="img/jupyter7.png" style="width:50.0%" /><br/></p>
+</div>
+<div id="python-script-simulation-to-ml" class="slide section level1">
+<h1>Python script: Simulation to ML</h1>
+<ul>
+<li><a
+href="../../scripts/morning/simulated_data_generation.py">simulated_data_generation.py</a></li>
+<li>This script is very similar to the previous notebook. It makes use
+of the “XT H 225” twin.</li>
+<li>It will, however, run loops over:
+<ul>
+<li>6 samples</li>
+<li>SOD: 150 mm +/- 20%</li>
+<li>Current: 160 uA +/- 30%</li>
+<li>Exposures: [0.5, 1.0, 1.42, 2.0] seconds, and</li>
+<li>Voltages in the range [180, 225].</li>
+</ul></li>
+<li>In total, 3600 CT slices and corresponding labels will be
+generated.</li>
+</ul>
+</div>
+<div id="other-ways-to-use-gvxr" class="slide section level1">
+<h1>7. Other ways to use gVXR</h1>
+<ul>
+<li>See
+<ul>
+<li><a
+href="https://gvirtualxray.sourceforge.io/tutorials/">https://gvirtualxray.sourceforge.io/tutorials/</a></li>
+<li><a
+href="https://github.com/TomographicImaging/gVXR-Tutorials">https://github.com/TomographicImaging/gVXR-Tutorials</a></li>
+</ul></li>
+<li>Write the code to describe the previous parameters in pure <img
+src="img/python-logo-generic.svg" height="30" alt="Python" />, <img
+src="img/cpp-logo.png" height="30" alt="C++" />, <img
+src="img/Rlogo.svg" height="30" alt="R" />, <img src="img/ruby-crop.png"
+height="30" alt="Ruby" />, <img src="img/Tcl-powered.svg" height="30"
+alt="Tcl" />, <img src="img/Logo_C_sharp.svg" height="30" alt="C#" />,
+<img src="img/java-ar21.svg" height="30" alt="Java" />, and <img
+src="img/gnu-octave-logo-lnx.png" height="30" alt="GNU Octave" />.</li>
+<li>Or use a more human friendly <img
+src="img/json_logo_icon_168490.svg" height="30" alt="JSON" /> file.</li>
+<li>To simplify the <img src="img/python-logo-generic.svg" height="30"
+alt="Python" /> code.</li>
+</ul>
+</div>
+<div id="json-file-visualisation-window" class="slide section level1">
+<h1>JSON file (visualisation window)</h1>
+<div class="sourceCode" id="cb3" language="JSON" startFrom="1"><pre
+class="sourceCode JSON"><code class="sourceCode json"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>    <span class="dt">&quot;Window size&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="dv">640</span><span class="ot">,</span> <span class="dv">480</span><span class="ot">]</span><span class="fu">,</span></span></code></pre></div>
+</div>
+<div id="json-file-x-ray-source" class="slide section level1">
+<h1>JSON file (X-ray source)</h1>
+<div class="sourceCode" id="cb4" language="JSON" startFrom="3"><pre
+class="sourceCode JSON"><code class="sourceCode json" style="counter-reset: source-line 2;"><span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="st">&quot;Source&quot;</span><span class="er">:</span> <span class="fu">{</span></span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>        <span class="dt">&quot;Position&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="fl">0.0</span><span class="ot">,</span> <span class="fl">-1500.0</span><span class="ot">,</span> <span class="fl">0.0</span><span class="ot">,</span> <span class="st">&quot;mm&quot;</span><span class="ot">]</span><span class="fu">,</span></span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>        <span class="dt">&quot;Shape&quot;</span><span class="fu">:</span> <span class="st">&quot;POINT&quot;</span><span class="fu">,</span></span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>        <span class="dt">&quot;Beam&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a>            <span class="dt">&quot;Peak kilo voltage&quot;</span><span class="fu">:</span> <span class="fl">160.0</span><span class="fu">,</span></span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a>            <span class="dt">&quot;Tube angle&quot;</span><span class="fu">:</span> <span class="fl">12.0</span><span class="fu">,</span></span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a>            <span class="dt">&quot;mAs&quot;</span><span class="fu">:</span> <span class="fl">0.5</span><span class="fu">,</span></span>
+<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a>            <span class="dt">&quot;filter&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a>                <span class="ot">[</span><span class="st">&quot;Cu&quot;</span><span class="ot">,</span> <span class="fl">1.0</span><span class="ot">,</span> <span class="st">&quot;mm&quot;</span><span class="ot">]</span></span>
+<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a>            <span class="ot">]</span></span>
+<span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a>        <span class="fu">}</span></span>
+<span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a>    <span class="fu">}</span><span class="er">,</span></span></code></pre></div>
+</div>
+<div id="json-file-x-ray-detector" class="slide section level1">
+<h1>JSON file (X-ray detector)</h1>
+<div class="sourceCode" id="cb5" language="JSON" startFrom="15"><pre
+class="sourceCode JSON"><code class="sourceCode json" style="counter-reset: source-line 14;"><span id="cb5-15"><a href="#cb5-15" tabindex="-1"></a><span class="st">&quot;Detector&quot;</span><span class="er">:</span> <span class="fu">{</span></span>
+<span id="cb5-16"><a href="#cb5-16" tabindex="-1"></a>        <span class="dt">&quot;Position&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="fl">0.0</span><span class="ot">,</span> <span class="fl">400.0</span><span class="ot">,</span> <span class="fl">0.0</span><span class="ot">,</span> <span class="st">&quot;mm&quot;</span><span class="ot">]</span><span class="fu">,</span></span>
+<span id="cb5-17"><a href="#cb5-17" tabindex="-1"></a>        <span class="dt">&quot;UpVector&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="dv">0</span><span class="ot">,</span> <span class="dv">0</span><span class="ot">,</span> <span class="dv">-1</span><span class="ot">]</span><span class="fu">,</span></span>
+<span id="cb5-18"><a href="#cb5-18" tabindex="-1"></a>        <span class="dt">&quot;RightVector&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="fl">-1.0</span><span class="ot">,</span> <span class="fl">0.0</span><span class="ot">,</span> <span class="fl">0.0</span><span class="ot">]</span><span class="fu">,</span></span>
+<span id="cb5-19"><a href="#cb5-19" tabindex="-1"></a>        <span class="dt">&quot;NumberOfPixels&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="dv">512</span><span class="ot">,</span> <span class="dv">512</span><span class="ot">]</span><span class="fu">,</span></span>
+<span id="cb5-20"><a href="#cb5-20" tabindex="-1"></a>        <span class="dt">&quot;Size&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="fl">256.0</span><span class="ot">,</span> <span class="fl">256.0</span><span class="ot">,</span> <span class="st">&quot;mm&quot;</span><span class="ot">]</span><span class="fu">,</span></span>
+<span id="cb5-21"><a href="#cb5-21" tabindex="-1"></a>        <span class="dt">&quot;LSF&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="fl">0.0002</span><span class="ot">,</span> <span class="fl">0.0060</span><span class="ot">,</span> <span class="fl">0.0606</span><span class="ot">,</span> <span class="fl">0.2417</span><span class="ot">,</span> </span>
+<span id="cb5-22"><a href="#cb5-22" tabindex="-1"></a>            <span class="fl">0.3829</span><span class="ot">,</span> <span class="fl">0.2417</span><span class="ot">,</span> <span class="fl">0.0606</span><span class="ot">,</span> <span class="fl">0.0060</span><span class="ot">,</span> <span class="fl">0.0002</span><span class="ot">]</span><span class="fu">,</span></span>
+<span id="cb5-23"><a href="#cb5-23" tabindex="-1"></a>        <span class="dt">&quot;Scintillator&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb5-24"><a href="#cb5-24" tabindex="-1"></a>            <span class="dt">&quot;Material&quot;</span><span class="fu">:</span> <span class="st">&quot;CsI&quot;</span><span class="fu">,</span></span>
+<span id="cb5-25"><a href="#cb5-25" tabindex="-1"></a>            <span class="dt">&quot;Thickness&quot;</span><span class="fu">:</span> <span class="fl">500.0</span><span class="fu">,</span></span>
+<span id="cb5-26"><a href="#cb5-26" tabindex="-1"></a>            <span class="dt">&quot;Unit&quot;</span><span class="fu">:</span> <span class="st">&quot;um&quot;</span></span>
+<span id="cb5-27"><a href="#cb5-27" tabindex="-1"></a>        <span class="fu">}</span></span>
+<span id="cb5-28"><a href="#cb5-28" tabindex="-1"></a>    <span class="fu">}</span><span class="er">,</span>    </span></code></pre></div>
+</div>
+<div id="json-file-sample" class="slide section level1">
+<h1>JSON file (Sample)</h1>
+<div class="sourceCode" id="cb6" language="JSON" startFrom="29"><pre
+class="sourceCode JSON"><code class="sourceCode json" style="counter-reset: source-line 28;"><span id="cb6-29"><a href="#cb6-29" tabindex="-1"></a><span class="st">&quot;Samples&quot;</span><span class="er">:</span> <span class="ot">[</span></span>
+<span id="cb6-30"><a href="#cb6-30" tabindex="-1"></a>        <span class="fu">{</span></span>
+<span id="cb6-31"><a href="#cb6-31" tabindex="-1"></a>            <span class="dt">&quot;Label&quot;</span><span class="fu">:</span> <span class="st">&quot;Dragon&quot;</span><span class="fu">,</span></span>
+<span id="cb6-32"><a href="#cb6-32" tabindex="-1"></a>            <span class="dt">&quot;Path&quot;</span><span class="fu">:</span> <span class="st">&quot;welsh-dragon-small.stl&quot;</span><span class="fu">,</span></span>
+<span id="cb6-33"><a href="#cb6-33" tabindex="-1"></a>            <span class="dt">&quot;Unit&quot;</span><span class="fu">:</span> <span class="st">&quot;mm&quot;</span><span class="fu">,</span></span>
+<span id="cb6-34"><a href="#cb6-34" tabindex="-1"></a>            <span class="dt">&quot;Material&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="st">&quot;Mixture&quot;</span><span class="ot">,</span> <span class="st">&quot;Al6Ti90V4&quot;</span><span class="ot">]</span><span class="fu">,</span></span>
+<span id="cb6-35"><a href="#cb6-35" tabindex="-1"></a>            <span class="dt">&quot;Density&quot;</span><span class="fu">:</span> <span class="fl">4.43</span><span class="fu">,</span></span>
+<span id="cb6-36"><a href="#cb6-36" tabindex="-1"></a>            <span class="dt">&quot;Type&quot;</span><span class="fu">:</span> <span class="st">&quot;inner&quot;</span></span>
+<span id="cb6-37"><a href="#cb6-37" tabindex="-1"></a>        <span class="fu">}</span></span>
+<span id="cb6-38"><a href="#cb6-38" tabindex="-1"></a>    <span class="ot">]</span><span class="er">,</span></span></code></pre></div>
+</div>
+<div id="json-file-ct-scan-acquisition" class="slide section level1">
+<h1>JSON file (CT scan acquisition)</h1>
+<div class="sourceCode" id="cb7" language="JSON" startFrom="39"><pre
+class="sourceCode JSON"><code class="sourceCode json" style="counter-reset: source-line 38;"><span id="cb7-39"><a href="#cb7-39" tabindex="-1"></a><span class="st">&quot;Scan&quot;</span><span class="er">:</span> <span class="fu">{</span></span>
+<span id="cb7-40"><a href="#cb7-40" tabindex="-1"></a>        <span class="dt">&quot;OutFolder&quot;</span><span class="fu">:</span> <span class="st">&quot;projections&quot;</span><span class="fu">,</span></span>
+<span id="cb7-41"><a href="#cb7-41" tabindex="-1"></a>        <span class="dt">&quot;GifPath&quot;</span><span class="fu">:</span> <span class="st">&quot;screenshots&quot;</span><span class="fu">,</span></span>
+<span id="cb7-42"><a href="#cb7-42" tabindex="-1"></a>        <span class="dt">&quot;NumberOfProjections&quot;</span><span class="fu">:</span> <span class="dv">200</span><span class="fu">,</span></span>
+<span id="cb7-43"><a href="#cb7-43" tabindex="-1"></a>        <span class="dt">&quot;StartAngle&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="fu">,</span></span>
+<span id="cb7-44"><a href="#cb7-44" tabindex="-1"></a>        <span class="dt">&quot;FinalAngle&quot;</span><span class="fu">:</span> <span class="dv">360</span><span class="fu">,</span></span>
+<span id="cb7-45"><a href="#cb7-45" tabindex="-1"></a>        <span class="dt">&quot;IncludeLastAngle&quot;</span><span class="fu">:</span> <span class="kw">true</span><span class="fu">,</span></span>
+<span id="cb7-46"><a href="#cb7-46" tabindex="-1"></a>        <span class="dt">&quot;Flat-Field Correction&quot;</span><span class="fu">:</span> <span class="kw">true</span><span class="fu">,</span></span>
+<span id="cb7-47"><a href="#cb7-47" tabindex="-1"></a>        <span class="dt">&quot;NumberOfWhiteImages&quot;</span><span class="fu">:</span> <span class="dv">60</span><span class="fu">,</span></span>
+<span id="cb7-48"><a href="#cb7-48" tabindex="-1"></a>        <span class="dt">&quot;CentreOfRotation&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="dv">0</span><span class="ot">,</span> <span class="dv">0</span><span class="ot">,</span> <span class="dv">0</span><span class="ot">,</span> <span class="st">&quot;mm&quot;</span><span class="ot">]</span><span class="fu">,</span></span>
+<span id="cb7-49"><a href="#cb7-49" tabindex="-1"></a>        <span class="dt">&quot;RotationAxis&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="dv">0</span><span class="ot">,</span> <span class="dv">0</span><span class="ot">,</span> <span class="dv">-1</span><span class="ot">]</span></span>
+<span id="cb7-50"><a href="#cb7-50" tabindex="-1"></a>    <span class="fu">}</span></span>
+<span id="cb7-51"><a href="#cb7-51" tabindex="-1"></a><span class="er">}</span></span></code></pre></div>
+</div>
+<div id="python-file-ct-simulation" class="slide section level1">
+<h1><img src="img/python-logo-generic.svg" height="60" alt="Python" />
+file (CT simulation)</h1>
+<div class="sourceCode" id="cb8" language="Python" startFrom="1"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="im">from</span> gvxrPython3 <span class="im">import</span> json2gvxr <span class="co"># Simulate X-ray images</span></span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>json2gvxr.initGVXR(<span class="st">&quot;filename.json&quot;</span>, renderer<span class="op">=</span><span class="st">&quot;OPENGL&quot;</span>)</span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a>json2gvxr.initDetector()</span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a>json2gvxr.initSourceGeometry()</span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a>json2gvxr.initSpectrum()</span>
+<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a>json2gvxr.initSamples(verbose<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a>json2gvxr.initScan()</span>
+<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a>json2gvxr.doCTScan()</span></code></pre></div>
+</div>
+<div id="python-file-ct-reconstruction" class="slide section level1">
+<h1><img src="img/python-logo-generic.svg" height="60" alt="Python" />
+file (CT reconstruction)</h1>
+<div class="sourceCode" id="cb9" language="Python" startFrom="1"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="im">from</span> gvxrPython3.JSON2gVXRDataReader <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a><span class="im">from</span> cil.processors <span class="im">import</span> TransmissionAbsorptionConverter</span>
+<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a><span class="im">from</span> cil.framework <span class="im">import</span> AcquisitionData</span>
+<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a><span class="im">from</span> cil.recon <span class="im">import</span> FDK</span>
+<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a><span class="im">from</span> cil.io <span class="im">import</span> TIFFWriter</span>
+<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" tabindex="-1"></a>reader <span class="op">=</span> JSON2gVXRDataReader(file_name<span class="op">=</span><span class="st">&quot;filename.json&quot;</span>)</span>
+<span id="cb9-8"><a href="#cb9-8" tabindex="-1"></a></span>
+<span id="cb9-9"><a href="#cb9-9" tabindex="-1"></a>data_absorption <span class="op">=</span> TransmissionAbsorptionConverter(</span>
+<span id="cb9-10"><a href="#cb9-10" tabindex="-1"></a>    white_level<span class="op">=</span>data_original.<span class="bu">max</span>())(data_original)</span>
+<span id="cb9-11"><a href="#cb9-11" tabindex="-1"></a>    </span>
+<span id="cb9-12"><a href="#cb9-12" tabindex="-1"></a>acquisition_data <span class="op">=</span> AcquisitionData(data_absorption,</span>
+<span id="cb9-13"><a href="#cb9-13" tabindex="-1"></a>    geometry<span class="op">=</span>data_absorption.geometry)</span>
+<span id="cb9-14"><a href="#cb9-14" tabindex="-1"></a>    </span>
+<span id="cb9-15"><a href="#cb9-15" tabindex="-1"></a>acquisition_data.reorder(order<span class="op">=</span><span class="st">&quot;tigre&quot;</span>)</span>
+<span id="cb9-16"><a href="#cb9-16" tabindex="-1"></a></span>
+<span id="cb9-17"><a href="#cb9-17" tabindex="-1"></a>ig <span class="op">=</span> acquisition_data.geometry.get_ImageGeometry()</span>
+<span id="cb9-18"><a href="#cb9-18" tabindex="-1"></a></span>
+<span id="cb9-19"><a href="#cb9-19" tabindex="-1"></a>fdk <span class="op">=</span>  FDK(acquisition_data, ig)</span>
+<span id="cb9-20"><a href="#cb9-20" tabindex="-1"></a>recon <span class="op">=</span> fdk.run()</span>
+<span id="cb9-21"><a href="#cb9-21" tabindex="-1"></a>TIFFWriter(data<span class="op">=</span>recon, file_name<span class="op">=</span><span class="st">&quot;slices&quot;</span>, <span class="st">&quot;out&quot;</span>)).write()</span></code></pre></div>
+</div>
+<div id="modern-web-based-gui" class="slide section level1">
+<h1>Modern Web-based GUI</h1>
+<div class="columns">
+<div class="column">
+<div class="float">
+<img src="img/webct.png" style="width:90.0%"
+alt="Screenshot of WebCT" />
+<div class="figcaption">Screenshot of WebCT</div>
+</div>
+</div><div class="column">
+<p>See video on YouTube <img src="img/WebCTYouTube.png"
+style="width:50.0%" alt="QR code" /></p>
+<p>Download the latest release <img src="img/WebCTdownload.png"
+style="width:50.0%" alt="QR code" /></p>
+<p>Or visit <a href="https://webct.io/"
+class="uri">https://webct.io/</a></p>
+</div>
+</div>
+<p>:::::: :::::::</p>
+</div>
+<div id="thanks" class="slide section level1">
+<h1>Thanks</h1>
+<ul>
+<li>For your attentions;</li>
+<li>The Ada support team, in particular Adam, Isaac, Jeremy and Peter;
+and</li>
+<li>Our sponsors</li>
+</ul>
+<p><img src="img/CoSeC_Logo.png" height="60" alt="CoSeC" /> <img
+src="img/CCPi-logo-RGB.svg" height="60" alt="CCPi" /> <img
+src="img/NXCT%20Logo%20Title%20Slate.jpg" height="60" alt="NXCT" /> <img
+src="img/UKRI_STFC_STACKED_Ada%20Lovelace%20Centre_RGB.png" height="60"
+alt="Ada Lovelace Centre" /> <img
+src="img/UKRI_STFC_SCIENTIFIC_COMPUTING_RGB.png" height="60"
+alt="STFC Scientific Computing" /> <img src="img/A1_FullColour.png"
+height="60" alt="Bangor University" /> <img src="img/RIVIC_logo.png"
+height="60" alt="RIVIC" /> <img src="img/EN_FundedbytheEU_RGB_POS.png"
+height="60" alt="European Commission" /></p>
+</div>
+</body>
+<div class="logo">
+<img src="img/gVXR-greyscale-logo.svg" alt="" width="200px" />
+</div>
+</html>
