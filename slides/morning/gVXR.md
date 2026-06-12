@@ -132,28 +132,32 @@ Nucl. Instrum. Methods Phys. Res. Sect. B 2025, 568, 165804. doi: [10.1016/j.nim
 
 ::::: columns
 ::: column
-- Operating systems: ![MS Windows, MacOs, and GNU/Linux.](img/201-2015528_windows-mac-linux-logo.jpg){ height=30px }
+- Operating systems: ![MS Windows, MacOs, and GNU/Linux.](img/201-2015528_windows-mac-linux-logo.jpg){height=50px}
 - CPUs:
-  - x86_64 (i.e. Intel & AMD)
-  - ARM
+  - ![Intel](img/intel_icon-crop.svg){height=50px}<br/>
+  - ![AMD](img/AMD_E_Blk_RGB.png){height=50px}<br/>
+  - ![ARM](img/Arm_logo_blue_150LG.png){height=50px}<br/>
 - GPUs:
-  - NVIDIA
-  - AMD
-  - Intel
-  - Mesa software rendering
+  - ![NVIDIA](img/Nvidia_logo.svg){height=50px}<br/>
+  - ![AMD](img/AMD_E_Blk_RGB.png){height=50px}<br/>
+  - ![Intel](img/intel_icon-crop.svg){height=50px}<br/>
+  - ![Mesa 3D](img/Mesa3D_logo.svg){height=50px} (software rendering with Mesa 3D)<br/>
 :::
 
 ::: column
 - Computers:
-  - Raspberry Pi 5
-  - NVIDIA Jetson
-  - Laptop
-  - Desktop PC
-  - Supercomputers
-- Cloud infrastructures:
-  - Google Colab
-  - Code Ocean (used for reproducible research)
-- Containerisation with ![Docker.](img/Docker_logo.svg){ height=30px }
+  - On-board computers (OBCs) 
+    - ![Raspberry Pi 5](img/pi_raspberry_icon.svg){height=50px}<br/>
+    - ![NVIDIA](img/Nvidia_logo.svg){height=50px} Jetson
+  - Personal computers (PCs)
+    - ![Laptop](img/laptop_computer_icon.svg){height=50px}<br/>
+    - ![Desktop](img/computer_desktop_pc_icon.png){height=50px}<br/>
+  - Data center and High-performance computing (HPC)<br/>
+    - STFC SCARF
+    - ![Supercomputing Wales](img/lgo_supercomputingWales-1.png){height=50px}<br/>
+    - ![Google Colab](img/Google_Colaboratory_SVG_Logo.svg){height=50px}<br/>
+    - ![Code Ocean](img/Code_Ocean_logo_2021.svg){height=50px} (used for reproducible research)
+- Containerisation with ![Docker.](img/Docker_logo.svg){height=50px}<br/>
 :::
 :::::
 
@@ -438,7 +442,8 @@ $$
   - including kV and beam filtration;
 3. **Parallel beams**, **point sources**, & **focal spots**^1^;
 4. **Scintillation**;
-5. Noise (electronic & **photonic**).
+5. Impulse response of detectors;
+6. Noise (electronic & **photonic**).
 :::
 
 ::: column
@@ -452,7 +457,7 @@ $$
 
 
 
-# 4.5) Beer-Lambert law (polychromatic + focal spot + scintillation + PSF + electronic noise & photonic noise)
+# 4.6) Beer-Lambert law (polychromatic + focal spot + scintillation + PSF + electronic noise & photonic noise)
 
 $$
 I_{noisy}(x,y)  = \mathrm{Gauss}(\theta, \sigma) + gain \times 
@@ -465,7 +470,7 @@ $$
 - **Detector gain $\left(gain\right)$:** a multiplicative factor
 - **Photonic noise $\left(\mathrm{Poisson}\right)$:** Poisson noise that depends on the number of photons.
 
-# 4.5) Final approximated model
+# 4.6) Final approximated model
 
 - **Models of Poisson noise: computationally slow**;
 - Complexity for previous slide: $\mathcal{O}(n^3)$: 
@@ -497,7 +502,8 @@ $$
 3. **Parallel beams**, **point sources**, & **focal spots**^1^;
 4. **Scintillation**;
 5. Impulse response of detectors;
-6. Interactive 3D visualization
+6. Noise (electronic & **photonic**).
+7. Interactive 3D visualization
 :::
 
 ::: column
