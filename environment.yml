@@ -26,5 +26,5 @@ dependencies:
     - pip:
         - "gvxr==2.1.0"
         - "opencv-python-headless>=4.8"
-        - "tensorflow[and-cuda]==2.17.*"
+        - "tensorflow==2.17.*"
         - "segmentation-models==1.0.1"
