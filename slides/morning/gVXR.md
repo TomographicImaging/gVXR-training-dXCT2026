@@ -847,6 +847,7 @@ Or visit <https://webct.io/>
 
 ![CoSeC](img/CoSeC_Logo.png){height=60px} 
 ![CCPi](img/CCPi-logo-RGB.svg){height=60px} 
+![NXCT](img/NXCT%20Logo%20Title%20Slate.jpg){height=60px} 
 ![Ada Lovelace Centre](img/UKRI_STFC_STACKED_Ada Lovelace Centre_RGB.png){height=60px} 
 ![STFC Scientific Computing](img/UKRI_STFC_SCIENTIFIC_COMPUTING_RGB.png){height=60px} 
 ![Bangor University](img/A1_FullColour.png){height=60px} 
