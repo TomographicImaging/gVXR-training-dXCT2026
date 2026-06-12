@@ -177,6 +177,8 @@ pip install gvxr
 - Run the quick test script provided with gVirtualXray's Python package to make sure the installation is working well on your system.
 - [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/TomographicImaging/gVXR-training-dXCT2026/blob/main/notebooks/morning/test_installation.ipynb)
 
+![](img/jupyter1.png){width=50%}<br/>
+
 # 2. What can we scan?
 
 - Surface mesh from files (all common formats are supported, inc. STL)
@@ -251,10 +253,14 @@ $$
 - We show how to visualise the X-ray radiograph and take a screenshot of the 3D visualisation of the simulation environment.
 - [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/TomographicImaging/gVXR-training-dXCT2026/blob/main/notebooks/morning/first_xray_simulation.ipynb)
 
+![](img/jupyter2.png){width=50%}<br/>
+
 # Jupyter Notebook 3: Numpy integration
 - [numpy_integration.ipynb](../../notebooks/morning/numpy_integration.ipynb)
 - Experiment with the Numpy integration to speed up the simulation.
 - [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/TomographicImaging/gVXR-training-dXCT2026/blob/main/notebooks/morning/numpy_integration.ipynb)
+
+![](img/jupyter3.png){width=50%}<br/>
 
 # 4. Built-in functionalities
 
@@ -329,6 +335,8 @@ $$
 - We also shows how to plot the spectrum. 
 - [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/TomographicImaging/gVXR-training-dXCT2026/blob/main/notebooks/morning/polychromatism.ipynb)
 
+![](img/jupyter4.png){width=50%}<br/>
+
 # 4. Built-in functionalities
 
 ::::: columns
@@ -402,6 +410,8 @@ $$
 - In this notebook we explore how to create a detector with a scintillator.
 - We also shows how to plot the corresponding energy response. 
 - [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/TomographicImaging/gVXR-training-dXCT2026/blob/main/notebooks/morning/scintillation.ipynb)
+
+![](img/jupyter5.png){width=50%}<br/>
 
 # 4. Built-in functionalities
 
@@ -527,6 +537,7 @@ $$
 - In this notebook you will also create a multi-material sample. 
 - [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/TomographicImaging/gVXR-training-dXCT2026/blob/main/notebooks/morning/visualisation.ipynb)
 
+![](img/jupyter6.png){width=50%}<br/>
 
 # 5. Is gVXR validated? ^1^
 
@@ -680,8 +691,10 @@ void computeCTAcquisition(const std::string &  	aProjectionOutputPath,
 - Create a CT reconstruction from data simulated using a segmented image to model the sample.
 - [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/TomographicImaging/gVXR-training-dXCT2026/blob/main/notebooks/morning/segmentation-to-CT_scan-simulation.ipynb)
  
+![](img/jupyter7.png){width=50%}<br/>
+
 # Python script: Simulation to ML 
-- [simulated_data_generation.py](scripts/morning/simulated_data_generation.py)
+- [simulated_data_generation.py](../../scripts/morning/simulated_data_generation.py)
 - This script is very similar to the previous notebook. It makes use of the "XT H 225" twin. 
 - It will, however, run loops over:
   - 6 samples
@@ -693,6 +706,9 @@ void computeCTAcquisition(const std::string &  	aProjectionOutputPath,
 
 # 7. Other ways to use gVXR
 
+- See
+  - [https://gvirtualxray.sourceforge.io/tutorials/](https://gvirtualxray.sourceforge.io/tutorials/)
+  - [https://github.com/TomographicImaging/gVXR-Tutorials](https://github.com/TomographicImaging/gVXR-Tutorials)
 - Write the code to describe the previous parameters in pure
   ![Python](img/python-logo-generic.svg){height=30px},
   ![C++](img/cpp-logo.png){height=30px},
@@ -853,6 +869,3 @@ Or visit <https://webct.io/>
 ![Bangor University](img/A1_FullColour.png){height=60px} 
 ![RIVIC](img/RIVIC_logo.png){height=60px} 
 ![European Commission](img/EN_FundedbytheEU_RGB_POS.png){height=60px} 
-
-# End of Section on
-## "Introduction to X-ray attenuation and its implementation in gVXR"
