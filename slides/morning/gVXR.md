@@ -94,6 +94,13 @@ Used in a wide range of applications, including:
 :::
 :::::
 
+# How to cite?
+
+Vidal, F.P.; Afshari, S.; Ahmed, S.; Albiol, A.; Albiol, F.; Béchet, É.; Bellot, A.C.; Bosse, S.; Burkhard, S.; 
+Chahid, Y.; et al. X-ray simulations with gVXR in education, digital twining, experiment planning, and data analysis.
+Nucl. Instrum. Methods Phys. Res. Sect. B 2025, 568, 165804. doi: [10.1016/j.nimb.2025.165804](https://doi.org/10.1016/j.nimb.2025.165804)
+![Front page of user article.png](img/NIM-B.png){width=50%}
+
 # Implementation
 
 - R&D started in the early 2000s, VXI^1^ by Nicolas Freud (INSA-Lyon),
@@ -823,6 +830,20 @@ Or visit <https://webct.io/>
 ::::
 ::::::
 :::::::
+
+# Thanks
+
+- For your attentions;
+- The Ada support team, in particular Adam, Isaac, Jeremy and Peter; and 
+- Our sponsors
+
+![CoSeC](img/CoSeC_Logo.png){height=60px} 
+![CCPi](img/CCPi-logo-RGB.svg){height=60px} 
+![Ada Lovelace Centre](img/UKRI_STFC_STACKED_Ada Lovelace Centre_RGB.png){height=60px} 
+![STFC Scientific Computing](img/UKRI_STFC_SCIENTIFIC_COMPUTING_RGB.png){height=60px} 
+![Bangor University](img/A1_FullColour.png){height=60px} 
+![RIVIC](img/RIVIC_logo.png){height=60px} 
+![European Commission](img/EN_FundedbytheEU_RGB_POS.png){height=60px} 
 
 # End of Section on
 ## "Introduction to X-ray attenuation and its implementation in gVXR"
