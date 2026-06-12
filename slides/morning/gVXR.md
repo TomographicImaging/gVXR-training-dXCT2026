@@ -54,6 +54,8 @@ contents...
 
 ::::: columns
 ::: column
+![QR_gVXR](img/QR_gVXR.png){width=30%}<br/>
+[https://gvirtualxray.sourceforge.io/](https://gvirtualxray.sourceforge.io/)
 
 - API (application programming interface)
 - relying on the **Beer--Lambert law**
@@ -138,7 +140,7 @@ Nucl. Instrum. Methods Phys. Res. Sect. B 2025, 568, 165804. doi: [10.1016/j.nim
   - ![AMD](img/AMD_E_Blk_RGB.png){height=50px}<br/>
   - ![ARM](img/Arm_logo_blue_150LG.png){height=50px}<br/>
 - GPUs:
-  - ![NVIDIA](img/Nvidia_logo.svg){height=50px}<br/>
+  - ![NVIDIA](img/nvidia-logo-horiz-blk-16x9 1-crop.png){height=50px}<br/>
   - ![AMD](img/AMD_E_Blk_RGB.png){height=50px}<br/>
   - ![Intel](img/intel_icon-crop.svg){height=50px}<br/>
   - ![Mesa 3D](img/Mesa3D_logo.svg){height=50px} (software rendering with Mesa 3D)<br/>
@@ -152,10 +154,10 @@ Nucl. Instrum. Methods Phys. Res. Sect. B 2025, 568, 165804. doi: [10.1016/j.nim
   - Personal computers (PCs)
     - ![Laptop](img/laptop_computer_icon.svg){height=50px}<br/>
     - ![Desktop](img/computer_desktop_pc_icon.png){height=50px}<br/>
-  - Data center and High-performance computing (HPC)<br/>
+  - Data center and High-performance computing (HPC) systems
     - STFC SCARF
     - ![Supercomputing Wales](img/lgo_supercomputingWales-1.png){height=50px}<br/>
-    - ![Google Colab](img/Google_Colaboratory_SVG_Logo.svg){height=50px}<br/>
+    - ![](img/Google_Colaboratory_SVG_Logo.svg){height=50px} Google Colab<br/>
     - ![Code Ocean](img/Code_Ocean_logo_2021.svg){height=50px} (used for reproducible research)
 - Containerisation with ![Docker.](img/Docker_logo.svg){height=50px}<br/>
 :::
