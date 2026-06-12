@@ -8,10 +8,13 @@ gvxr.useWireframe(True)
 gvxr.displayBeam(False)
 
 # Update the visualisation
+gvxr.showWindow()
 gvxr.displayScene()
 
 # Take a screenshot
-screenshot = gvxr.takeScreenshot();
+screenshot = gvxr.takeScreenshot()
+gvxr.hideWindow()
+
 # Display it using Matplotlib
 plt.figure(figsize=(10, 10))
 plt.imshow(screenshot)
