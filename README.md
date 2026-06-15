@@ -95,11 +95,19 @@ Create a CT reconstruction from data simulated using a segmented image to model 
   - Exposures: [0.5, 1.0, 1.42, 2.0] seconds, and 
   - Voltages in the range [180, 225].
 
-# Total number of simulations
+### Total number of simulations
 number_of_samples = 6
 total_number_simulations = number_of_samples * len(kV_set) * len(current_uA_set) * len(exposure_s_set) * len(SOD_mm_set)
 
-# Iterate through all the settings
+### Iterate through all the settings
+
+### Afternoon Session
+
+- Discuss the use case of X-ray Computed Tomography as applied to batteries. What can we see? What can we measure? Why is it an important application?
+- Introduce Image Segmentation with the U-net architecture. Why is U-net a powerful architecture for image segmentation? What are the main steps required for building a robust model?
+- Static demonstration of [Notebook 01_data_organisation_and_augmentation](notebooks/afternoon/01_data_organisation_and_augmentation.ipynb).
+- Static demonstration of [Notebook 02_unet_training_workflow_for_ct](notebooks/afternoon/02_unet_training_workflow_for_ct.ipynb).
+- Live demonstration of [Notebook 03_model_eval_and_inference](notebooks/afternoon/03_model_eval_and_inference.ipynb).
 
 ## How to find help
 
