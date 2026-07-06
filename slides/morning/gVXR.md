@@ -96,6 +96,20 @@ Used in a wide range of applications, including:
 :::
 :::::
 
+# How to get help
+
+- Email me (Franck P. Vidal, STFC);
+- Join the discord: [https://discord.gg/eZj3CDBqCz](https://discord.gg/eZj3CDBqCz);
+- Raise an issue on GitHub: [https://github.com/TomographicImaging/gVXR-Tutorials/issues](https://github.com/TomographicImaging/gVXR-Tutorials/issues);
+- Open a ticket on SourceForge: [https://sourceforge.net/p/gvirtualxray/tickets](https://sourceforge.net/p/gvirtualxray/tickets);
+- <strike>Subscribe to the mailing list: https://sourceforge.net/projects/gvirtualxray/lists/gvirtualxray-discuss;</strike>
+- In Python, check the technical documentation, e.g. 
+  - calling `help(gvxr)` for help on the Python package, or 
+  - something like `help (gvxr.function_name)` for a specific function.
+- It is also available at [https://gvirtualxray.sourceforge.io/documentation/](https://gvirtualxray.sourceforge.io/documentation/)
+  - It is formatted in C++;
+  - SimpleGVXR API also applies to Python.
+  
 # How to cite?
 
 Vidal, F.P.; Afshari, S.; Ahmed, S.; Albiol, A.; Albiol, F.; Béchet, É.; Bellot, A.C.; Bosse, S.; Burkhard, S.; 

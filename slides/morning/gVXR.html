@@ -15,16 +15,10 @@
 simulation" />
   <title>Introduction to X-ray attenuation and its implementation in gVXR</title>
   <style type="text/css">
-    /* Default styles provided by pandoc.
-    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
-    */
+    code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
-    div.columns{display: flex; gap: 1.5em;}
-    div.column{flex: auto;}
-    @media screen {
-    div.columns{gap: min(4vw, 1.5em);}
-    div.column{overflow-x: auto;}
-    }
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
     /* The extra [class] is a hack that increases specificity enough to
        override a similar rule in reveal.js */
@@ -36,9 +30,8 @@ simulation" />
       vertical-align: middle;
     }
     /* CSS for syntax highlighting */
-    html { -webkit-text-size-adjust: 100%; }
     pre > code.sourceCode { white-space: pre; position: relative; }
-    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span { line-height: 1.25; }
     pre > code.sourceCode > span:empty { height: 1.2em; }
     .sourceCode { overflow: visible; }
     code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -49,7 +42,7 @@ simulation" />
     }
     @media print {
     pre > code.sourceCode { white-space: pre-wrap; }
-    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
     }
     pre.numberSource code
       { counter-reset: source-line 0; }
@@ -105,8 +98,8 @@ simulation" />
     href="https://www.w3.org/Talks/Tools/Slidy2/styles/slidy.css" />
   <link rel="stylesheet" type="text/css" media="screen, projection, print"
    href="./custom.css" />
-  <script defer=""
-  src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js"
+  <script
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
   type="text/javascript"></script>
   <script src="https://www.w3.org/Talks/Tools/Slidy2/scripts/slidy.js"
     charset="utf-8" type="text/javascript"></script>
@@ -230,6 +223,33 @@ alt="Example of applications." />
 </div>
 </div>
 </div>
+</div>
+<div id="how-to-get-help" class="slide section level1">
+<h1>How to get help</h1>
+<ul>
+<li>Email me (Franck P. Vidal, STFC);</li>
+<li>Join the discord: <a
+href="https://discord.gg/eZj3CDBqCz">https://discord.gg/eZj3CDBqCz</a>;</li>
+<li>Raise an issue on GitHub: <a
+href="https://github.com/TomographicImaging/gVXR-Tutorials/issues">https://github.com/TomographicImaging/gVXR-Tutorials/issues</a>;</li>
+<li>Open a ticket on SourceForge: <a
+href="https://sourceforge.net/p/gvirtualxray/tickets">https://sourceforge.net/p/gvirtualxray/tickets</a>;</li>
+<li><strike>Subscribe to the mailing list:
+https://sourceforge.net/projects/gvirtualxray/lists/gvirtualxray-discuss;</strike></li>
+<li>In Python, check the technical documentation, e.g. 
+<ul>
+<li>calling <code>help(gvxr)</code> for help on the Python package,
+or</li>
+<li>something like <code>help (gvxr.function_name)</code> for a specific
+function.</li>
+</ul></li>
+<li>It is also available at <a
+href="https://gvirtualxray.sourceforge.io/documentation/">https://gvirtualxray.sourceforge.io/documentation/</a>
+<ul>
+<li>It is formatted in C++;</li>
+<li>SimpleGVXR API also applies to Python.</li>
+</ul></li>
+</ul>
 </div>
 <div id="how-to-cite" class="slide section level1">
 <h1>How to cite?</h1>
@@ -1315,13 +1335,13 @@ class="sourceCode JSON"><code class="sourceCode json"><span id="cb3-1"><a href="
 <div id="json-file-x-ray-source" class="slide section level1">
 <h1>JSON file (X-ray source)</h1>
 <div class="sourceCode" id="cb4" language="JSON" startFrom="3"><pre
-class="sourceCode JSON"><code class="sourceCode json" style="counter-reset: source-line 2;"><span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="st">&quot;Source&quot;</span><span class="er">:</span> <span class="fu">{</span></span>
-<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>        <span class="dt">&quot;Position&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="fl">0.0</span><span class="ot">,</span> <span class="fl">-1500.0</span><span class="ot">,</span> <span class="fl">0.0</span><span class="ot">,</span> <span class="st">&quot;mm&quot;</span><span class="ot">]</span><span class="fu">,</span></span>
+class="sourceCode JSON"><code class="sourceCode json" style="counter-reset: source-line 2;"><span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="er">&quot;Source&quot;:</span> <span class="fu">{</span></span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>        <span class="dt">&quot;Position&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="dv">0</span><span class="er">.</span><span class="dv">0</span><span class="ot">,</span> <span class="fl">-1500.0</span><span class="ot">,</span> <span class="dv">0</span><span class="er">.</span><span class="dv">0</span><span class="ot">,</span> <span class="st">&quot;mm&quot;</span><span class="ot">]</span><span class="fu">,</span></span>
 <span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>        <span class="dt">&quot;Shape&quot;</span><span class="fu">:</span> <span class="st">&quot;POINT&quot;</span><span class="fu">,</span></span>
 <span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>        <span class="dt">&quot;Beam&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
 <span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a>            <span class="dt">&quot;Peak kilo voltage&quot;</span><span class="fu">:</span> <span class="fl">160.0</span><span class="fu">,</span></span>
 <span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a>            <span class="dt">&quot;Tube angle&quot;</span><span class="fu">:</span> <span class="fl">12.0</span><span class="fu">,</span></span>
-<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a>            <span class="dt">&quot;mAs&quot;</span><span class="fu">:</span> <span class="fl">0.5</span><span class="fu">,</span></span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a>            <span class="dt">&quot;mAs&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="er">.</span><span class="dv">5</span><span class="fu">,</span></span>
 <span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a>            <span class="dt">&quot;filter&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
 <span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a>                <span class="ot">[</span><span class="st">&quot;Cu&quot;</span><span class="ot">,</span> <span class="fl">1.0</span><span class="ot">,</span> <span class="st">&quot;mm&quot;</span><span class="ot">]</span></span>
 <span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a>            <span class="ot">]</span></span>
@@ -1331,14 +1351,14 @@ class="sourceCode JSON"><code class="sourceCode json" style="counter-reset: sour
 <div id="json-file-x-ray-detector" class="slide section level1">
 <h1>JSON file (X-ray detector)</h1>
 <div class="sourceCode" id="cb5" language="JSON" startFrom="15"><pre
-class="sourceCode JSON"><code class="sourceCode json" style="counter-reset: source-line 14;"><span id="cb5-15"><a href="#cb5-15" tabindex="-1"></a><span class="st">&quot;Detector&quot;</span><span class="er">:</span> <span class="fu">{</span></span>
-<span id="cb5-16"><a href="#cb5-16" tabindex="-1"></a>        <span class="dt">&quot;Position&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="fl">0.0</span><span class="ot">,</span> <span class="fl">400.0</span><span class="ot">,</span> <span class="fl">0.0</span><span class="ot">,</span> <span class="st">&quot;mm&quot;</span><span class="ot">]</span><span class="fu">,</span></span>
+class="sourceCode JSON"><code class="sourceCode json" style="counter-reset: source-line 14;"><span id="cb5-15"><a href="#cb5-15" tabindex="-1"></a><span class="er">&quot;Detector&quot;:</span> <span class="fu">{</span></span>
+<span id="cb5-16"><a href="#cb5-16" tabindex="-1"></a>        <span class="dt">&quot;Position&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="dv">0</span><span class="er">.</span><span class="dv">0</span><span class="ot">,</span> <span class="fl">400.0</span><span class="ot">,</span> <span class="dv">0</span><span class="er">.</span><span class="dv">0</span><span class="ot">,</span> <span class="st">&quot;mm&quot;</span><span class="ot">]</span><span class="fu">,</span></span>
 <span id="cb5-17"><a href="#cb5-17" tabindex="-1"></a>        <span class="dt">&quot;UpVector&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="dv">0</span><span class="ot">,</span> <span class="dv">0</span><span class="ot">,</span> <span class="dv">-1</span><span class="ot">]</span><span class="fu">,</span></span>
-<span id="cb5-18"><a href="#cb5-18" tabindex="-1"></a>        <span class="dt">&quot;RightVector&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="fl">-1.0</span><span class="ot">,</span> <span class="fl">0.0</span><span class="ot">,</span> <span class="fl">0.0</span><span class="ot">]</span><span class="fu">,</span></span>
+<span id="cb5-18"><a href="#cb5-18" tabindex="-1"></a>        <span class="dt">&quot;RightVector&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="fl">-1.0</span><span class="ot">,</span> <span class="dv">0</span><span class="er">.</span><span class="dv">0</span><span class="ot">,</span> <span class="dv">0</span><span class="er">.</span><span class="dv">0</span><span class="ot">]</span><span class="fu">,</span></span>
 <span id="cb5-19"><a href="#cb5-19" tabindex="-1"></a>        <span class="dt">&quot;NumberOfPixels&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="dv">512</span><span class="ot">,</span> <span class="dv">512</span><span class="ot">]</span><span class="fu">,</span></span>
 <span id="cb5-20"><a href="#cb5-20" tabindex="-1"></a>        <span class="dt">&quot;Size&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="fl">256.0</span><span class="ot">,</span> <span class="fl">256.0</span><span class="ot">,</span> <span class="st">&quot;mm&quot;</span><span class="ot">]</span><span class="fu">,</span></span>
-<span id="cb5-21"><a href="#cb5-21" tabindex="-1"></a>        <span class="dt">&quot;LSF&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="fl">0.0002</span><span class="ot">,</span> <span class="fl">0.0060</span><span class="ot">,</span> <span class="fl">0.0606</span><span class="ot">,</span> <span class="fl">0.2417</span><span class="ot">,</span> </span>
-<span id="cb5-22"><a href="#cb5-22" tabindex="-1"></a>            <span class="fl">0.3829</span><span class="ot">,</span> <span class="fl">0.2417</span><span class="ot">,</span> <span class="fl">0.0606</span><span class="ot">,</span> <span class="fl">0.0060</span><span class="ot">,</span> <span class="fl">0.0002</span><span class="ot">]</span><span class="fu">,</span></span>
+<span id="cb5-21"><a href="#cb5-21" tabindex="-1"></a>        <span class="dt">&quot;LSF&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="dv">0</span><span class="er">.0002</span><span class="ot">,</span> <span class="dv">0</span><span class="er">.0060</span><span class="ot">,</span> <span class="dv">0</span><span class="er">.0606</span><span class="ot">,</span> <span class="dv">0</span><span class="er">.</span><span class="dv">2417</span><span class="ot">,</span> </span>
+<span id="cb5-22"><a href="#cb5-22" tabindex="-1"></a>            <span class="dv">0</span><span class="er">.</span><span class="dv">3829</span><span class="ot">,</span> <span class="dv">0</span><span class="er">.</span><span class="dv">2417</span><span class="ot">,</span> <span class="dv">0</span><span class="er">.0606</span><span class="ot">,</span> <span class="dv">0</span><span class="er">.0060</span><span class="ot">,</span> <span class="dv">0</span><span class="er">.0002</span><span class="ot">]</span><span class="fu">,</span></span>
 <span id="cb5-23"><a href="#cb5-23" tabindex="-1"></a>        <span class="dt">&quot;Scintillator&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
 <span id="cb5-24"><a href="#cb5-24" tabindex="-1"></a>            <span class="dt">&quot;Material&quot;</span><span class="fu">:</span> <span class="st">&quot;CsI&quot;</span><span class="fu">,</span></span>
 <span id="cb5-25"><a href="#cb5-25" tabindex="-1"></a>            <span class="dt">&quot;Thickness&quot;</span><span class="fu">:</span> <span class="fl">500.0</span><span class="fu">,</span></span>
@@ -1349,7 +1369,7 @@ class="sourceCode JSON"><code class="sourceCode json" style="counter-reset: sour
 <div id="json-file-sample" class="slide section level1">
 <h1>JSON file (Sample)</h1>
 <div class="sourceCode" id="cb6" language="JSON" startFrom="29"><pre
-class="sourceCode JSON"><code class="sourceCode json" style="counter-reset: source-line 28;"><span id="cb6-29"><a href="#cb6-29" tabindex="-1"></a><span class="st">&quot;Samples&quot;</span><span class="er">:</span> <span class="ot">[</span></span>
+class="sourceCode JSON"><code class="sourceCode json" style="counter-reset: source-line 28;"><span id="cb6-29"><a href="#cb6-29" tabindex="-1"></a><span class="er">&quot;Samples&quot;:</span> <span class="ot">[</span></span>
 <span id="cb6-30"><a href="#cb6-30" tabindex="-1"></a>        <span class="fu">{</span></span>
 <span id="cb6-31"><a href="#cb6-31" tabindex="-1"></a>            <span class="dt">&quot;Label&quot;</span><span class="fu">:</span> <span class="st">&quot;Dragon&quot;</span><span class="fu">,</span></span>
 <span id="cb6-32"><a href="#cb6-32" tabindex="-1"></a>            <span class="dt">&quot;Path&quot;</span><span class="fu">:</span> <span class="st">&quot;welsh-dragon-small.stl&quot;</span><span class="fu">,</span></span>
@@ -1363,7 +1383,7 @@ class="sourceCode JSON"><code class="sourceCode json" style="counter-reset: sour
 <div id="json-file-ct-scan-acquisition" class="slide section level1">
 <h1>JSON file (CT scan acquisition)</h1>
 <div class="sourceCode" id="cb7" language="JSON" startFrom="39"><pre
-class="sourceCode JSON"><code class="sourceCode json" style="counter-reset: source-line 38;"><span id="cb7-39"><a href="#cb7-39" tabindex="-1"></a><span class="st">&quot;Scan&quot;</span><span class="er">:</span> <span class="fu">{</span></span>
+class="sourceCode JSON"><code class="sourceCode json" style="counter-reset: source-line 38;"><span id="cb7-39"><a href="#cb7-39" tabindex="-1"></a><span class="er">&quot;Scan&quot;:</span> <span class="fu">{</span></span>
 <span id="cb7-40"><a href="#cb7-40" tabindex="-1"></a>        <span class="dt">&quot;OutFolder&quot;</span><span class="fu">:</span> <span class="st">&quot;projections&quot;</span><span class="fu">,</span></span>
 <span id="cb7-41"><a href="#cb7-41" tabindex="-1"></a>        <span class="dt">&quot;GifPath&quot;</span><span class="fu">:</span> <span class="st">&quot;screenshots&quot;</span><span class="fu">,</span></span>
 <span id="cb7-42"><a href="#cb7-42" tabindex="-1"></a>        <span class="dt">&quot;NumberOfProjections&quot;</span><span class="fu">:</span> <span class="dv">200</span><span class="fu">,</span></span>
